@@ -9,6 +9,7 @@ Version created for tutorial 2 of IronPython and GDATA series.
 License: MIT
 
 '''
+__version__ = "$Revision$"[11:-1]
 import sys
 import clr
 clr.AddReference("System.Windows.Forms")
@@ -102,7 +103,7 @@ class GDataReaderForm(System.Windows.Forms.Form):
                                 AnchorStyles.Bottom | AnchorStyles.Top)
         self.gdataUriTextBox.TabIndex = 2
         self.gdataUriTextBox.Text = ""
-        self.gdataUriTextBox.Leave += self.GdataLoadFeed
+        self.gdataUriTextBox.AcceptsReturn = False
         # gdataEntriesTextBox
         self.gdataEntriesTextBox.Location = System.Drawing.Point(8, 56)
         self.gdataEntriesTextBox.Multiline = True
@@ -118,9 +119,11 @@ class GDataReaderForm(System.Windows.Forms.Form):
         # statusBar
         self.statusBar.Location = System.Drawing.Point(0, 303)
         self.statusBar.Name = "statusBar"
-        #self.statusBar.Panels.AddRange(System.Windows.Forms.StatusBarPanel[] { self.statusBarPanelMsg})
+        self.statusBarPanelMsg = System.Windows.Forms.StatusBarPanel()
+        self.statusBar.Panels.Add(self.statusBarPanelMsg)
+	self.statusBarPanelMsg.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Spring
         self.statusBar.Size = System.Drawing.Size(744, 22)
-        self.statusBar.TabIndex = 4
+        self.statusBar.ShowPanels = True
         # label1
         self.label1.Location = System.Drawing.Point(8, 16)
         self.label1.Name = "label1"
@@ -137,12 +140,14 @@ class GDataReaderForm(System.Windows.Forms.Form):
         self.Controls.Add(self.gdataUriTextBox)
         self.Controls.Add(self.gdataRefreshButton)
         self.Controls.Add(self.toolBar)
+	self.AcceptButton = self.gdataRefreshButton
         self.Name = "gdataReaderForm"
         self.Text = "GDATA Reader"
         System.ComponentModel.ISupportInitialize.EndInit(self.statusBarPanelMsg)
         self.ResumeLayout(False)
 
     def GdataLoadFeed(self, sender, args):
+	self.statusBarPanelMsg.Text = "Get %s" % self.gdataUriTextBox.Text
         try:
             entries = []
             for entry in load_feed(self.gdataUriTextBox.Text):
@@ -150,6 +155,7 @@ class GDataReaderForm(System.Windows.Forms.Form):
             self.gdataEntriesTextBox.Text = os.linesep.join(entries)
         except Exception, e:
             self.DisplayError(e)
+	self.statusBarPanelMsg.Text = "Done"
 
     def DisplayError(self, e):
         self.gdataEntriesTextBox.Text = "Unable to display feed due to following error:%s%s" % (os.linesep, str(e))
@@ -159,9 +165,13 @@ class GDataReaderForm(System.Windows.Forms.Form):
         Return entry formatted as a number of strings delimited with the line
         separator for the OS platform.
         '''
+	if entry.Summary.Text is None:
+	    summary = ""
+	else:
+	    summary = entry.Summary.Text
         return "%s%s%s%s" % (entry.Title.Text,
                             os.linesep,
-                            entry.Summary.Text,
+                            summary,
                             os.linesep)
 
 def main(argv=sys.argv):
