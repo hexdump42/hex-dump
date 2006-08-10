@@ -10,6 +10,7 @@ uses a RichTextBox for the entries view.
 License: MIT
 
 '''
+__version__ = "$Revision$"[11:-1]
 import sys
 import clr
 clr.AddReference("System.Windows.Forms")
@@ -103,6 +104,7 @@ class GDataReaderForm(System.Windows.Forms.Form):
                                 AnchorStyles.Bottom | AnchorStyles.Top)
         self.gdataUriTextBox.TabIndex = 2
         self.gdataUriTextBox.Text = ""
+        self.gdataUriTextBox.AcceptsReturn = False
         self.gdataUriTextBox.Leave += self.GdataLoadFeed
         # gdataEntriesRichTextBox
         self.gdataEntriesRichTextBox.Location = System.Drawing.Point(8, 56)
@@ -120,8 +122,11 @@ class GDataReaderForm(System.Windows.Forms.Form):
         # statusBar
         self.statusBar.Location = System.Drawing.Point(0, 303)
         self.statusBar.Name = "statusBar"
-        #self.statusBar.Panels.AddRange(System.Windows.Forms.StatusBarPanel[] { self.statusBarPanelMsg})
+        self.statusBarPanelMsg = System.Windows.Forms.StatusBarPanel()
+        self.statusBar.Panels.Add(self.statusBarPanelMsg)
+	self.statusBarPanelMsg.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Spring
         self.statusBar.Size = System.Drawing.Size(744, 22)
+        self.statusBar.ShowPanels = True
         # label1
         self.label1.Location = System.Drawing.Point(8, 16)
         self.label1.Name = "label1"
@@ -137,6 +142,7 @@ class GDataReaderForm(System.Windows.Forms.Form):
         self.Controls.Add(self.gdataUriTextBox)
         self.Controls.Add(self.gdataRefreshButton)
         self.Controls.Add(self.toolBar)
+	self.AcceptButton = self.gdataRefreshButton
         self.Name = "gdataReaderForm"
         self.Text = "GDATA Reader"
         System.ComponentModel.ISupportInitialize.EndInit(self.statusBarPanelMsg)
@@ -147,12 +153,14 @@ class GDataReaderForm(System.Windows.Forms.Form):
         Load the GDATA feed using uri in gdataUriTextBox, and display RTF
         rendering in gdataEntriesRichTextBox.
         '''
+	self.statusBarPanelMsg.Text = "Get %s" % self.gdataUriTextBox.Text
         try:
             entries = []
             entries = load_feed(self.gdataUriTextBox.Text)
             self.gdataEntriesRichTextBox.Rtf = self.FormatAsRtf(entries)
         except Exception, e:
             self.DisplayError(e)
+	self.statusBarPanelMsg.Text = "Done"
 
     def DisplayError(self, e):
         '''
@@ -161,6 +169,9 @@ class GDataReaderForm(System.Windows.Forms.Form):
         self.gdataEntriesRichTextBox.Text = "Unable to display feed due to following error:%s%s" % (os.linesep, str(e))
 
     def LinkClicked(self, sender, args):
+	'''
+	Get OS to launch the link using associated application
+	'''
         System.Diagnostics.Process.Start(args.LinkText)
 
     def FormatAsRtf(self, entries):
