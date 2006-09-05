@@ -15,17 +15,7 @@ try:
     clr.AddReference("Mono.Data.SqliteClient")
     from Mono.Data.SqliteClient import SqliteConnection as dbconnection
     connectstr = 'URI=file:ip2country.db,version=3'
-except:
-    clr.AddReference("System.Data.ODBCClient")
-    from System.Data.Odbc import OdbcConnection as dbconnection
-    connectstr = 'DSN=ip2country'
-
-dbcon = dbconnection(connectstr)
-
-dbcon.Open()
-
-dbcmd = dbcon.CreateCommand()
-dbcmd.CommandText = '''
+    ip2country_create_table_ddl = '''
     CREATE TABLE ip2country (
         ipfrom          INTEGER,
         ipto            INTEGER,
@@ -34,17 +24,27 @@ dbcmd.CommandText = '''
         countryname     VARCHAR(50),
         PRIMARY KEY (ipfrom,ipto)
     )
-'''
-
-dbcmd.ExecuteNonQuery()
-
-dbcmd.CommandText = '''
-    CREATE TABLE flags (
+    '''
+except:
+    from System.Data.Odbc import OdbcConnection as dbconnection
+    connectstr = 'DSN=ip2country'
+    ip2country_create_table_ddl = '''
+    CREATE TABLE ip2country (
+        ipfrom          DOUBLE,
+        ipto            DOUBLE,
         countrycode2    CHAR(2),
-        flagimage       BLOB,
-        PRIMARY KEY (countrycode2)
+        countrycode3    CHAR(3),
+        countryname     VARCHAR(50),
+        CONSTRAINT ip2country_pk PRIMARY KEY (ipfrom,ipto)
     )
-'''
+    '''
+
+dbcon = dbconnection(connectstr)
+
+dbcon.Open()
+
+dbcmd = dbcon.CreateCommand()
+dbcmd.CommandText = ip2country_create_table_ddl
 
 dbcmd.ExecuteNonQuery()
 
