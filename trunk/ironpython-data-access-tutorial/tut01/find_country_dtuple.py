@@ -22,7 +22,6 @@ try:
     from Mono.Data.SqliteClient import SqliteConnection as dbconnection
     connectstr = 'URI=file:ip2country.db,version=3'
 except:
-    clr.AddReference("System.Data.ODBCClient")
     from System.Data.Odbc import OdbcConnection as dbconnection
     connectstr = 'DSN=ip2country'
 
