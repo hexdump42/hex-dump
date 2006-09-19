@@ -1,6 +1,8 @@
 Development of Mono Applications with Agile Languages
 =====================================================
 
+Author: Mark Rees
+
 Introduction
 ------------
 
@@ -34,13 +36,32 @@ IronPython is licensed under a Microsoft Shared Source license.
 
 This paper uses IronPython 1.0 released in September 2006.
 
-A note on the examples
+*A note on the examples*
 
-Most of the examples in this paper use or enhance an existing Mono application F-Spot [fspot]_. F-Spot is a full-featured personal photo management application written in C# for the GNOME desktop.
+Most of the examples in this paper use or enhance an existing Mono application F-Spot [fspot]_. F-Spot is a full-featured personal photo management application written in C# for the GNOME desktop. The full source code for the examples can be found in my online subversion repository [code]_.
 
 
 1. Agile Investigation
 ----------------------
+
+With both Boo and IronPython having interactive consoles that expose the full functionality of the language, and these provide an excellent environment for investigation and experimentation.
+
+As an example of how easy it is to use, we will investigate and experiment with the F-Spot LibGPhoto2-Sharp assembly which is a C# wrapper for the gphoto2 [gphoto2]_ C library. This library allows UNIX-like operating systems to communicate with over 700 digital camera models.
+
+Boo Shell - booish::
+
+ >>> import LibGPhoto2 from "libgphoto2-sharp.dll"
+ >>> dir(Camera)
+ (Void .ctor(), Void SetAbilities(CameraAbilities),
+ Void Init(LibGPhoto2.Context),...)
+ >>> mycamera = Camera()
+ LibGPhoto2.Camera
+ >>> cx = Context()
+ LibGPhoto2.Context
+
+IronPython Console - mono ipy.exe::
+
+ >>>
 
 2. Script Your Objects
 ----------------------
@@ -55,7 +76,7 @@ Since we can script other CLI objects, it is easy to create simple unit tests.
 
 F-Spot uses SQLite 3 as it's relational data store. Since a SQLite ADO.NET provider comes with Mono, it is very easy with either Boo or IronPython to access the data store. In the examples we find all photos that have been tagged with "Publish To Web".
 
-::
+datamine.boo::
 
  import System
  import System.Data from System.Data
@@ -76,8 +97,79 @@ F-Spot uses SQLite 3 as it's relational data store. Since a SQLite ADO.NET provi
      print reader[0].ToString()
  dbcon.Close()
 
+datamine.py::
+
+ import clr
+ import System
+ clr.AddReference("System.Data")
+ clr.AddReference("Mono.Data.SqliteClient")
+ from Mono.Data.SqliteClient import SqliteConnection, SqliteCommand
+
+ dbcon = SqliteConnection()
+ connectionString = 'URI=file:/home/mark/.gnome2/f-spot/photos.db,version=3'
+ dbcon.ConnectionString = connectionString
+ dbcon.Open()
+ dbcmd = SqliteCommand()
+ dbcmd.Connection = dbcon
+ dbcmd.CommandText = """select * from photos, photo_tags, tags 
+ where photos.id = photo_tags.photo_id 
+ and photo_tags.tag_id = tags.id 
+ and tags.name = 'Publish To Web'"""
+ reader = dbcmd.ExecuteReader()
+ while reader.Read():
+     print reader[2].ToString() + "/" + reader[3].ToString()
+ dbcon.Close()
+
 5. Throw Together A Web Interface
 ---------------------------------
+
+Photos.aspx::
+
+ <%@Page Inherits="HexDump.Examples.Boo.Web.FSpotPhotos.Photos" %>
+ <html>
+ <body>
+ <form runat="server">
+ <center>
+ <div id="_photos" runat="server" >
+ </div>
+ </center>
+ </form>
+ </body>
+ </html>
+
+Snippet from Photos.aspx.boo::
+
+ class Photos(Page):
+ 
+     _photos as HtmlGenericControl
+ 
+     def Page_Load(sender, args as EventArgs):
+         table = "<table><tr><th>Image Name</th><th>Location</th></tr>"
+         for row as Boo.Lang.Hash in self.GetPhotosByTag('Publish To Web'):
+             tabrow = "<tr><td>${row['name']}</td><td>${row['directory_path']}</td></tr>"
+             table += tabrow
+         table += "</table>"
+         _photos.InnerHtml = table
+ 
+     def GetPhotosByTag(tag):
+         dbcon as SqliteConnection = SqliteConnection()
+         connectionString as string = 'URI=file:/home/mark/.gnome2/f-spot/photos.db,version=3'
+         dbcon.ConnectionString = connectionString
+         dbcon.Open()
+         dbcmd as SqliteCommand = SqliteCommand()
+         dbcmd.Connection = dbcon
+         dbcmd.CommandText = """select * from photos, photo_tags, tags 
+         where photos.id = photo_tags.photo_id 
+         and photo_tags.tag_id = tags.id 
+         and tags.name = 'Publish To Web'"""
+         reader as SqliteDataReader = dbcmd.ExecuteReader()
+         while reader.Read():
+             row = {}
+             row['directory_path'] = reader[2].ToString()
+             row['name'] = reader[3].ToString()
+             row['description'] = reader[4].ToString()
+             yield row
+         dbcon.Close()
 
 6. Implement Objects
 --------------------
@@ -85,7 +177,7 @@ F-Spot uses SQLite 3 as it's relational data store. Since a SQLite ADO.NET provi
 7. Write A Complete Application
 -------------------------------
 
-While this paper has focused on how these agile languages can assist in development of an appliaction created with C#, both Boo and IronPython can create Windows Forms or GTK# applications, so there is no reason why capable...
+While this paper has focused on how these agile languages can assist in development of an application created with C#, Boo and IronPython are capable of creating standalone Windows Forms, GTK# or Web applications. 
 
 Conclusion
 ----------
@@ -111,3 +203,9 @@ Boo has better support for NUnit and can create CLI components that can be used 
 
 .. [fspot] F-Spot Home Page
     (http://f-spot.org/)
+
+.. [code] Source code for examples
+    (http://hex-dump.googlecode.com/svn/trunk/osdc/2006/code
+
+.. [gphoto2] gPhoto2 Digital Camera Software
+    (http://www.gphoto.org/)
