@@ -12,9 +12,9 @@ License: MIT
 import sys
 import dbapi
 try:
-    import sqlite as db
+    import sqlite3 as db
     dbapi._load_type(db.assembly,db.typename)
-    connectstr = 'URI=file:ip2country.db,version=3'
+    connectstr = 'ip2country.db'
 except:
     import odbc as db
     dbapi._load_type(db.assembly,db.typename)

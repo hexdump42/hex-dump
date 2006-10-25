@@ -9,9 +9,9 @@ License: MIT
 '''
 import dbapi
 try:
-    import sqlite as db
+    import sqlite3 as db
     dbapi._load_type(db.assembly,db.typename)
-    connectstr = 'URI=file:ip2country.db,version=3'
+    connectstr = 'ip2country.db'
     ip2country_create_table_ddl = '''
     CREATE TABLE ip2country (
         ipfrom          INTEGER,
