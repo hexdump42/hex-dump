@@ -181,7 +181,7 @@ datamine.boo::
  and tags.name = 'Publish To Web'"
  reader as SqliteDataReader = dbcmd.ExecuteReader()
  while reader.Read():
-     print reader[0].ToString()
+     print reader[2].ToString()
  dbcon.Close()
 
 datamine.py::
@@ -260,11 +260,27 @@ Snippet from Photos.aspx.boo::
              yield row
          dbcon.Close()
 
-Due to the unknown future of IronPython ASP.NET code-behind support, Seo Sanghyeon and the author have been working on an ASP.NET handler [wsgihdlr]_ which implements a WSGI [wsgi]_ gateway. The following code snippet [fepy-web]_ uses the gateway to publish a table of f-spot images.
+Due to the unknown future of IronPython ASP.NET code-behind support, Seo Sanghyeon, Christoper Baus and the author have been working on an ASP.NET handler [wsgihdlr]_ which implements a WSGI [wsgi]_ gateway. The following code snippet [fepy-web]_ uses the gateway to publish a table of f-spot images.
 
 Code snippet from photos.py::
 
- import wsgi
+ import sqlite3
+ 
+ def main(environ, start_response):
+     connectionString = '/home/mark/.gnome2/f-spot/photos.db'
+     dbcon = sqlite.connect(connectionString)
+     cursor = dbcon.cursor()
+     commandText = """select * from photos, photo_tags, tags
+         where photos.id = photo_tags.photo_id
+         and photo_tags.tag_id = tags.id
+         and tags.name = 'Publish To Web'"""
+     cursor.execute(commandText)
+     yield "<table><tr><th>Image Name</th><th>Location</th></tr>"
+     for row in cursor.fetchall():
+         yield "<tr><td>%s</td><td>%s</td></tr>" % (row[3], row[2])
+     cursor.close()
+     dbcon.close()
+     yield "</table>"
 
 Conclusion
 ----------
@@ -299,7 +315,7 @@ References
     (http://f-spot.org/)
 
 .. [ipce] IronPython Community Edition 1.0 download. This version has number of patches that fix issues when running under Mono.
-    (http://sparcs.kaist.ac.kr/~tinuviel/download/IPCE-1.0r1.zip
+    (http://sourceforge.net/project/showfiles.php?group_id=178069)
 
 .. [gphoto2] gPhoto2 Digital Camera Software
     (http://www.gphoto.org/)
@@ -308,7 +324,7 @@ References
     (http://www.nunit.org/)
 
 .. [wsgihdlr] ASP.NET WSGI Handler
-    (http://sparcs.kaist.ac.kr/~tinuviel/fepy/src/)
+    (https://svn.sourceforge.net/svnroot/fepy/trunk/src/)
 
 .. [wsgi] Web Services Gateway Interface PEP.
     (http://www.python.org/dev/peps/pep-0333/)
