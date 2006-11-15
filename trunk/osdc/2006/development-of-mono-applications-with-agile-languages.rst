@@ -186,28 +186,24 @@ datamine.boo::
      print reader[2].ToString()
  dbcon.Close()
 
-datamine.py::
+While IronPython could directly use the SQLite ADO.NET provider, an IronPython implementation [ipce]_ of the Python DB-API is available. An example using the DB-API is shown below:
 
- import clr
- import System
- clr.AddReference("System.Data")
- clr.AddReference("Mono.Data.SqliteClient")
- from Mono.Data.SqliteClient import SqliteConnection, SqliteCommand
+datamine_dbapi.py::
 
- dbcon = SqliteConnection()
- connectionString = 'URI=file:/home/mark/.gnome2/f-spot/photos.db,version=3'
- dbcon.ConnectionString = connectionString
- dbcon.Open()
- dbcmd = SqliteCommand()
- dbcmd.Connection = dbcon
- dbcmd.CommandText = """select * from photos, photo_tags, tags 
+ import sqlite3
+
+ connectionString = '/home/mark/.gnome2/f-spot/photos.db'
+ dbcon = sqlite3.connect(connectionString)
+ cursor = dbcon.cursor()
+ commandText = """select * from photos, photo_tags, tags 
  where photos.id = photo_tags.photo_id 
  and photo_tags.tag_id = tags.id 
  and tags.name = 'Publish To Web'"""
- reader = dbcmd.ExecuteReader()
- while reader.Read():
-     print reader[2].ToString() + "/" + reader[3].ToString()
- dbcon.Close()
+ cursor.execute(commandText)
+ for row in cursor.fetchall():
+     print row[2] + "/" + row[3]
+ cursor.close()
+ dbcon.close()
 
 5. Throw Together A Web Interface
 ---------------------------------
@@ -270,7 +266,7 @@ Code snippet from photos.py::
  
  def main(environ, start_response):
      connectionString = '/home/mark/.gnome2/f-spot/photos.db'
-     dbcon = sqlite.connect(connectionString)
+     dbcon = sqlite3.connect(connectionString)
      cursor = dbcon.cursor()
      commandText = """select * from photos, photo_tags, tags
          where photos.id = photo_tags.photo_id
@@ -287,11 +283,19 @@ Code snippet from photos.py::
 Conclusion
 ----------
 
-While this paper has focused on how these agile languages can assist in development of an application created with C#, Boo and IronPython are very capable of creating standalone Windows Forms, GTK# or Web applications. 
+While this paper has focused on how these agile languages can assist in development of an application created with C#, Boo and IronPython are very capable of creating standalone Windows Forms [wfex]_, GTK# or Web applications. 
 
-Both languages have features that differentiate them. Boo's ability to create CLI components that can be used by any other CLI language. Also being able to work seamlessly with NUnit and NAnt. IronPython's access to the Python standard library and other Python code at runtime. Of course, if you dislike Python indentation and syntax, there are other CLI agile languages to consider for your Mono development.
+Both languages have features that differentiate them. Boo's ability to create CLI components that can be used by any other CLI language. Also being able to work seamlessly with NUnit and NAnt. IronPython's access to the Python standard library and other Python code at runtime.
 
-Hopefully I have been able to give you the incentive to investigate using agile languages as part of your Mono development toolkit.
+But both languages offer a number of advantages over core CLI languages like C#.
+
+ * An interactive environment to develop and test code.
+
+ * Clean and wrist-friendly syntax.
+
+ * Automatic type inference and casting.
+
+Hopefully I have been able to give you the incentive to investigate using agile languages as part of your Mono development toolbox.
 
 References
 ----------
@@ -299,7 +303,7 @@ References
 .. [mono] Mono Home Page
     (http://go-mono.org/)
 
-.. [cli] Common Language Infastructure, an open specification developed by Microsoft that describes the executable code and runtime environment that forms the core of the Microsoft .NET Framework.
+.. [cli] Common Language Infrastructure, an open specification developed by Microsoft that describes the executable code and runtime environment that forms the core of the Microsoft .NET Framework.
      (http://www.ecma-international.org/publications/standards/Ecma-335.htm)
 
 .. [ag] Alan Green, Six Things Groovy Can Do For You
@@ -319,7 +323,7 @@ References
 .. [fspot] F-Spot Home Page
     (http://f-spot.org/)
 
-.. [ipce] IronPython Community Edition 1.0 download. This version has number of patches that fix issues when running under Mono.
+.. [ipce] IronPython Community Edition 1.0 download. This version has number of patches that fix issues when running under Mono, and a subset of the CPython standard library that is known to run under IronPython.
     (http://sourceforge.net/project/showfiles.php?group_id=178069)
 
 .. [gphoto2] gPhoto2 Digital Camera Software
@@ -337,6 +341,9 @@ References
 
 .. [wsgi] Web Services Gateway Interface PEP.
     (http://www.python.org/dev/peps/pep-0333/)
+
+.. [wfex] A Windows.Forms GUI for GDATA Reader Example
+    (http://hex-dump.blogspot.com/2006/08/windowsforms-gui-for-gdata-reader_12.html)
 
 Links to code examples
 ----------------------
