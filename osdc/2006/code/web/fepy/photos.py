@@ -1,8 +1,8 @@
-import sqlite
+import sqlite3
 
 def main(environ, start_response):
-    connectionString = '/home/mark/.gnome2/f-spot/photos.db,version=3'
-    dbcon = sqlite.connect(connectionString)
+    connectionString = '/home/mark/.gnome2/f-spot/photos.db'
+    dbcon = sqlite3.connect(connectionString)
     cursor = dbcon.cursor()
     commandText = """select * from photos, photo_tags, tags 
         where photos.id = photo_tags.photo_id 
