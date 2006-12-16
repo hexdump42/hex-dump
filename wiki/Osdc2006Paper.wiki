@@ -1,13 +1,11 @@
 #summary Development of Mono Applications with Agile Languages
 #labels osdcmelb2006
 
-Development of Mono Applications with Agile Languages
-=====================================================
+=Development of Mono Applications with Agile Languages=
 
 Author: Mark Rees
 
-Introduction
-------------
+==Introduction==
 
 Mono [mono]_, the open source implementation of the Microsoft's Common Language
 Infrastructure [cli]_ aka .NET, provides an opportunity to develop software components and
@@ -86,6 +84,7 @@ library allows UNIX-like operating systems to communicate with over 700 digital 
 
 Boo Shell - booish::
 
+{{{
  >>> import LibGPhoto2 from "libgphoto2-sharp.dll"
  >>> dir(Camera)
  (Void .ctor(), Void SetAbilities(CameraAbilities),
@@ -97,9 +96,11 @@ Boo Shell - booish::
  >>> mycamera.Init(cx)
  >>> mycamera.GetAbilities().model
  'Kodak DX6340'
+}}}
 
 IronPython Console - mono ipy.exe::
 
+{{{
  >>> import clr
  >>> clr.AddReference("libgphoto2-sharp.dll")
  >>> import LibGPhoto2
@@ -112,6 +113,7 @@ IronPython Console - mono ipy.exe::
  >>> mycamera.Init(cx)
  >>> mycamera.GetAbilities().model
  'Kodak DX6340'
+}}}
 
 2. Script Your Objects
 ----------------------
