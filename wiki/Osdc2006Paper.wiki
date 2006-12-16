@@ -1,5 +1,6 @@
 #summary Development of Mono Applications with Agile Languages
 #labels osdcmelb2006
+#format rst
 
 =Development of Mono Applications with Agile Languages=
 
