@@ -13,7 +13,7 @@ License: MIT
 '''
 import clr
 import System
-clr.AddReference("gdata.dll")
+clr.AddReference("Google.GData.Client")
 import Google.GData.Client as GDClient
 
 def parse(uri, nc=None):

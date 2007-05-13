@@ -18,7 +18,7 @@ import System
 import System.Drawing
 import System.Windows.Forms
 from System.Windows.Forms import AnchorStyles
-clr.AddReference("gdata.dll")
+clr.AddReference("Google.GData.Client.dll")
 import Google.GData.Client as GDClient
 
 # Normally we can get the text file line separator from os.linesep
