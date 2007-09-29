@@ -1,0 +1,20 @@
+<Canvas
+   xmlns="http://schemas.microsoft.com/client/2007"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   Width="640" Height="480"
+   Background="White"
+   >
+  
+<MediaElement AutoPlay="False" x:Name="Movie_wmv" Width="320" Height="240" Canvas.Left="128" Canvas.Top="56" Source="Movie.wmv" Stretch="Fill"/>
+  
+<TextBlock x:Name="txtPlay" Width="72" Height="24" Canvas.Left="136"
+      Canvas.Top="336" Text="Play" TextWrapping="Wrap" 
+      MouseLeftButtonDown="DoPlay"/>
+
+<TextBlock x:Name="txtStop" Width="80" Height="24" Canvas.Left="136"
+      Canvas.Top="368" Text="Stop" TextWrapping="Wrap"
+      MouseLeftButtonDown="DoStop"/>
+
+
+
+</Canvas>
