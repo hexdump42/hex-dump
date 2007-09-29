@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?><!-- -*- nxml -*- -->
+<Desklet>
+    <name>Moonlight Logo</name>
+    <version>0.0.1</version>
+    <author>Mark Rees</author>
+    <description>A simple video-player desklet</description>
+    <desklet path="default.xaml"/>
+</Desklet>
+
