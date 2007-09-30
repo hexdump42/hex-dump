@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.4.1: http://docutils.sourceforge.net/" />
+<title>Moonlight - Shiny, Pretty Things with XML?</title>
+<style type="text/css">
+
+/*
+:Author: David Goodger
+:Contact: goodger@users.sourceforge.net
+:Date: $Date: 2005-12-18 01:56:14 +0100 (Sun, 18 Dec 2005) $
+:Revision: $Revision: 4224 $
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin-left: 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left {
+  clear: left }
+
+img.align-right {
+  clear: right }
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font-family: serif ;
+  font-size: 100% }
+
+pre.literal-block, pre.doctest-block {
+  margin-left: 2em ;
+  margin-right: 2em ;
+  background-color: #eeeeee }
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+tt.docutils {
+  background-color: #eeeeee }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+</head>
+<body>
+<div class="document" id="moonlight-shiny-pretty-things-with-xml">
+<h1 class="title">Moonlight - Shiny, Pretty Things with XML?</h1>
+<p>Author: Mark Rees</p>
+<div class="section">
+<h1><a id="introduction" name="introduction">Introduction</a></h1>
+<p>When Microsoft released Silverlight <a class="citation-reference" href="#silverlight" id="id1" name="id1">[silverlight]</a>, a cross platform, cross browser programming model for developing and distributing rich Internet applications (RIA) that use graphics, animations or video, they forgot Linux. But the Mono <a class="citation-reference" href="#mono" id="id2" name="id2">[mono]</a> team corrected the oversight and created Moonlight <a class="citation-reference" href="#moonlight" id="id3" name="id3">[moonlight]</a>, the open source implementation. This paper will review the status of the implementation and provide an introduction on how to use Moonlight. It will also discuss how you can use Moonlight in a non Mono context.</p>
+</div>
+<div class="section">
+<h1><a id="what-is-moonlight" name="what-is-moonlight">What is Moonlight</a></h1>
+<p>Moonlight is an open source implementation of Microsoft's Silverlight Web development technology. At the time of the writing of this paper, Moonlight implements both versions of Silverlight.</p>
+<p>Version 1.0 consists of a presentation framework responsible for UI, graphics, animation, and media playback. A Moonlight application is started when the Moonlight browser plugin is invoked within an HTML page. The plugin loads a XAML <a class="citation-reference" href="#xaml" id="id4" name="id4">[xaml]</a> file which contains a Canvas object. This Canvas object is the root element for all other elements used for the UI. These elements include basic graphic primitives and complex elements like images, and media. Moonlight can be manipulated by browser scripting languages thru modification of the DOM API it exposes.</p>
+<p>Version 1.1 improves the Canvas object whereby the XAML file can be augmented with code-behind code. It also supports an EMCA CLI <a class="citation-reference" href="#cli" id="id5" name="id5">[cli]</a> runtime so it can execute compiled Mono code in a restricted environment with limited local file access.</p>
+<p>Similar to Silverlight, Moonlight is implemented as a combination of managed and unmanaged code. The majority of the rendering pipeline is coded in C/C++ and currently uses Cairo <a class="citation-reference" href="#cairo" id="id6" name="id6">[cairo]</a>, the 2D vector graphics library. Media decoding is done using FFmpeg <a class="citation-reference" href="#ffmpeg" id="id7" name="id7">[ffmpeg]</a>. This code is in the moon module <a class="citation-reference" href="#moon" id="id8" name="id8">[moon]</a>. The code for XAML, base scripting and Linq support is in the olive module <a class="citation-reference" href="#olive" id="id9" name="id9">[olive]</a>.</p>
+</div>
+<div class="section">
+<h1><a id="xaml-101" name="xaml-101">XAML 101</a></h1>
+<p>Moonlight XAML is a subset of the Windows Presentation Framework <a class="citation-reference" href="#wpf" id="id10" name="id10">[wpf]</a> with a limited set of UI controls. In the context of Moonlight, XAML is a declarative XML-based language that defines graphical or UI elements and their properties in XML.</p>
+<p>Every Moonlight XAML contains a root Canvas element with Silverlight and XAML namespace declarations.</p>
+<pre class="literal-block">
+&lt;Canvas
+   xmlns=&quot;http://schemas.microsoft.com/client/2007&quot;
+   xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;&gt;
+&lt;/Canvas&gt;
+</pre>
+<p>The Canvas element is used to contain and position other graphical primitive shapes, UI controls and additional Canvas elements. To add a shape to a Canvas, simply insert the shape element declaration between the &lt;Canvas&gt; tags. An element is positioned via the Canvas.Left and Canvas.Top properties. In the following example, a green filled Rectangle with a black border is added and positioned 20 pixels from the left and 40 pixels from the top of the Canvas. The Canvas element also has optional Height, Width and Background properties.</p>
+<pre class="literal-block">
+&lt;Canvas
+    xmlns=&quot;http://schemas.microsoft.com/client/2007&quot;
+    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+    Height=&quot;600&quot; Width=&quot;600&quot;
+    Background=&quot;Gray&quot;&gt;
+  &lt;Rectangle
+      Canvas.Left=&quot;20&quot; Canvas.Top=&quot;40&quot;
+      Height=&quot;200&quot; Width=&quot;200&quot;
+      Stroke=&quot;Black&quot; StrokeThickness=&quot;10&quot; Fill=&quot;Green&quot; /&gt;
+&lt;/Canvas&gt;
+</pre>
+<p>To view the above example in a Moonlight enabled web browser, the XAML could be saved to a file called xaml101-1.xaml, and a HTML page created that embeds the Moonlight plugin and references the example xaml file. An example of a HTML page follows.</p>
+<pre class="literal-block">
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;View Moonlight Example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body bgcolor=&quot;white&quot;&gt;
+   &lt;p align=&quot;center&quot;&gt;
+       &lt;object id=&quot;moonControl&quot; width=&quot;600&quot; height=&quot;600&quot; type=&quot;application/x-silverlight&quot;&gt;
+           &lt;param name=&quot;background&quot; value=&quot;#ffebcd&quot; /&gt;
+           &lt;param name=&quot;enableHtmlAccess&quot; value=&quot;true&quot; /&gt;
+           &lt;param name=&quot;source&quot; value=&quot;xaml101-1.xaml&quot; /&gt;
+           &lt;param name=&quot;windowless&quot; value=&quot;false&quot; /&gt;
+        &lt;/object&gt;
+    &lt;/p&gt;
+ &lt;/body&gt;
+ &lt;/html&gt;
+</pre>
+<p>Even though Silverlight was intended to be used within a web browser, the Moonlight team saw a use for the technology in developing Linux desktop widgets. To allow launching of Moonlight XAML files outside of a browser, there is now a command called mopen. It can also be used to launch Mono applications or directory packages of Mono/Moonlight executables and resources. So by entering the following command, it is possible to view the example without a web browser.</p>
+<pre class="literal-block">
+mopen xaml101-1.xaml
+</pre>
+</div>
+<div class="section">
+<h1><a id="conclusion" name="conclusion">Conclusion</a></h1>
+<p>Moonlight may be only alpha quality software (as Silverlight 1.1 is), but what the Moonlight team have achieved to-date makes me feel confident that the Linux community will not be left out of a Silverlight Rich Internet Applications world. Certainly Microsoft feels the same after annoucing <a class="citation-reference" href="#silverlight4linux" id="id11" name="id11">[silverlight4linux]</a> a formal parnership with Novell to deliver Silverlight support for Linux with Moonlight.</p>
+</div>
+<div class="section">
+<h1><a id="references" name="references">References</a></h1>
+<table class="docutils citation" frame="void" id="silverlight" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1" name="silverlight">[silverlight]</a></td><td>Silverlight Home Page
+(<a class="reference" href="http://www.silverlight.net/">http://www.silverlight.net/</a>)</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="mono" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2" name="mono">[mono]</a></td><td>Mono Home Page
+(<a class="reference" href="http://www.mono-project.com/">http://www.mono-project.com/</a>)</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="moonlight" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3" name="moonlight">[moonlight]</a></td><td>Moonlight Project Page
+(<a class="reference" href="http://www.mono-project.com/Moonlight">http://www.mono-project.com/Moonlight</a>)</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="xaml" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4" name="xaml">[xaml]</a></td><td>Extensible Application Markup Language
+(<a class="reference" href="http://xaml.net/">http://xaml.net/</a>)</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="cairo" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6" name="cairo">[cairo]</a></td><td>Cairo 2D Graphics Library Home Page
+(<a class="reference" href="http://cairographics.org">http://cairographics.org</a>)</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="ffmpeg" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7" name="ffmpeg">[ffmpeg]</a></td><td>FFmpeg Project Home Page
+(<a class="reference" href="http://ffmpeg.mplayerhq.hu/index.html">http://ffmpeg.mplayerhq.hu/index.html</a>)</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="moon" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id8" name="moon">[moon]</a></td><td>Moonlight Rendering Pipeline
+(<a class="reference" href="http://anonsvn.mono-project.com/viewcvs/trunk/moon/">http://anonsvn.mono-project.com/viewcvs/trunk/moon/</a>)</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="olive" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id9" name="olive">[olive]</a></td><td>dotNet 3.x add-on libraries for Mono core
+(<a class="reference" href="http://anonsvn.mono-project.com/viewcvs/trunk/olive/">http://anonsvn.mono-project.com/viewcvs/trunk/olive/</a>)</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="cli" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5" name="cli">[cli]</a></td><td>The Common Language Infrastructure (CLI) is an open specification developed by Microsoft that describes the executable code and runtime environment that form the core of the Microsoft .NET Framework.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="wpf" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id10" name="wpf">[wpf]</a></td><td>Windows Presentation Foundation
+(<a class="reference" href="http://msdn2.microsoft.com/en-us/library/ms754130.aspx">http://msdn2.microsoft.com/en-us/library/ms754130.aspx</a>)</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="silverlight4linux" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id11" name="silverlight4linux">[silverlight4linux]</a></td><td>Microsoft announcement of Silverlight for Linux Support
+(<a class="reference" href="http://weblogs.asp.net/scottgu/archive/2007/09/04/silverlight-1-0-released-and-silverlight-for-linux-announced.aspx">http://weblogs.asp.net/scottgu/archive/2007/09/04/silverlight-1-0-released-and-silverlight-for-linux-announced.aspx</a>)</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section">
+<h1><a id="links-to-paper-and-code" name="links-to-paper-and-code">Links to paper and code</a></h1>
+<table class="docutils citation" frame="void" id="paper" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a name="paper">[paper]</a></td><td>Latest version of this paper
+(<a class="reference" href="http://hex-dump.googlecode.com/svn/trunk/osdc/2007/moonlight-shiny-pretty-things-with-xml.html">http://hex-dump.googlecode.com/svn/trunk/osdc/2007/moonlight-shiny-pretty-things-with-xml.html</a>)</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="code" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a name="code">[code]</a></td><td>Source code for all examples
+(<a class="reference" href="http://hex-dump.googlecode.com/svn/trunk/osdc/2007/code">http://hex-dump.googlecode.com/svn/trunk/osdc/2007/code</a>)</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</body>
+</html>
