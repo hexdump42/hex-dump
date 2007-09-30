@@ -1,0 +1,11 @@
+ <Canvas
+     xmlns="http://schemas.microsoft.com/client/2007"
+     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     Height="600" Width="600"
+     Background="Gray">
+   <Rectangle
+       Canvas.Left="20" Canvas.Top="40"
+       Height="200" Width="200"
+       Stroke="Black" StrokeThickness="10" Fill="Green" />
+ </Canvas>
+
