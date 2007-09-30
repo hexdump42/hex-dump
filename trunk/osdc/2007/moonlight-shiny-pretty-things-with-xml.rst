@@ -74,6 +74,217 @@ Even though Silverlight was intended to be used within a web browser, the Moonli
 
  mopen xaml101-1.xaml
 
+To identify elements within a Moonlight application, naming of an element instance can be done using the X:Name property. Naming elements allows CLI language to easily access the element and is also required to animate elements.
+
+::
+
+ <Canvas
+     xmlns="http://schemas.microsoft.com/client/2007"
+     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     Height="600" Width="600"
+     Background="Gray">
+   <Rectangle 
+       x:Name="MyRectangleOne"
+       Canvas.Left="20" Canvas.Top="40" 
+       Height="200" Width="200"
+       Stroke="Black" StrokeThickness="10" Fill="Green" />
+ </Canvas>
+
+Simple animation
+
+::
+
+ <Canvas
+     xmlns="http://schemas.microsoft.com/client/2007"
+     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+   <Canvas.Triggers>
+        <EventTrigger RoutedEvent="Canvas.Loaded">
+            <EventTrigger.Actions>
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation Storyboard.TargetName="MyRectangleOnesBrush"
+                                           Storyboard.TargetProperty="Color"
+                                           From="Green" To="Blue"
+                                           Duration="0:0:5" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger.Actions>
+        </EventTrigger>
+   </Canvas.Triggers>
+
+   <Rectangle
+       x:Name="MyRectangleOne"
+       Canvas.Left="20" Canvas.Top="40"
+       Height="200" Width="200"
+       Stroke="Black" StrokeThickness="10" >
+        <Rectangle.Fill>
+            <SolidColorBrush x:Name="MyRectangleOnesBrush" Color="Green" />
+        </Rectangle.Fill>
+   </Rectangle>
+ </Canvas>
+
+XAML is used to define the presentation layer for a Moonlight application, and relies on the application logic to be provided by either the browser javascript or a compiled assembly. The x:Class property allows the creation of a custom class in a CLI language that extends Canvas. The following example extends Canvas and prints the CPU load within the Rectangle.
+
+xaml101-4.xaml - XAML to display rectangle with text block::
+
+ <Canvas
+     xmlns="http://schemas.microsoft.com/client/2007"
+     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="CPULoad.CpuMonitorPanel;assembly=monitor.dll"
+        Loaded="PageLoaded" Width="300" Height="300">
+
+        <Canvas.Resources>
+            <Storyboard x:Name="run">
+            </Storyboard>
+            <Storyboard x:Name="color_sb">
+                        <ColorAnimation x:Name="color_anim"
+                                Storyboard.TargetName="CPULoadRectangleBrush"
+                                Storyboard.TargetProperty="Color"
+                                From="Green" To="Green" Duration="0:0:1" />
+            </Storyboard>
+    </Canvas.Resources>
+
+   <Rectangle
+       x:Name="CPULoadRectangle"
+       Canvas.Left="20" Canvas.Top="40"
+       Height="200" Width="200"
+       Stroke="Black" StrokeThickness="10" >
+        <Rectangle.Fill>
+            <SolidColorBrush x:Name="CPULoadRectangleBrush" Color="White" />
+        </Rectangle.Fill>
+   </Rectangle>
+   <TextBlock
+       x:Name="Load"
+       Text="100%"
+       FontSize="36"
+       FontWeight="Bold"
+       Foreground="White"
+       Canvas.Left="40"
+       Canvas.Top="60" />
+ </Canvas>
+
+monitor.cs::
+
+ using System;
+ using System.IO;
+ using System.Globalization;
+ 
+ using System.Windows;
+ using System.Windows.Input;
+ using System.Windows.Controls;
+ using System.Windows.Media;
+ using System.Windows.Media.Animation;
+ using System.Windows.Shapes;
+ 
+ namespace CPULoad
+ {
+ 	public struct CpuCounter {
+		long user;
+		long nice;
+		long system;
+		long idle;
+		long iowait;
+		long irq;
+		long softirq;
+		long steal;
+		long total;
+		
+		public void Read (String line) {
+			String[] parts = line.Split (new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+			total += (user = long.Parse (parts [1]));
+			total += (nice = long.Parse (parts [2]));
+			total += (system = long.Parse (parts [3]));
+			total += (idle = long.Parse (parts [4]));
+			total += (iowait = long.Parse (parts [5]));
+			total += (irq = long.Parse (parts [6]));
+			total += (softirq = long.Parse (parts [7]));
+			total += (steal = long.Parse (parts [8]));
+		}
+
+		public CpuCounter Sub (ref CpuCounter other) {
+			CpuCounter res = this;
+			res.user -= other.user;
+			res.nice -= other.nice;
+			res.system -= other.system;
+			res.idle -= other.idle;
+			res.iowait -= other.iowait;
+			res.irq -= other.irq;
+			res.softirq -= other.softirq;
+			res.steal -= other.steal;
+			res.total -= other.total;
+			return res;
+		}
+
+		public void FetchGlobalCounters() {
+			using ( StreamReader sr = new StreamReader ("/proc/stat")) {
+				String line = sr.ReadLine ();
+				Read (line);
+			}
+		}
+		
+		public double CpuLoad () {
+			return 100d * ((double)(total - idle) / total);
+		}
+	}
+
+	public class CpuMonitorPanel : Canvas 
+	{
+		Shape cpurect;
+		TextBlock load;
+		CpuCounter last;
+		ColorAnimation colorAnim;
+		Storyboard colorSb;
+
+		public void DrawLoad ()
+		{
+			CpuCounter cur = new CpuCounter ();
+			cur.FetchGlobalCounters ();
+			CpuCounter delta = cur.Sub (ref last);
+			last = cur;
+    		
+			double num = Math.Round (delta.CpuLoad ());
+			load.Text = ((int)num).ToString ();
+			Color current = (cpurect.Fill as SolidColorBrush).Color;
+			Color color = new Color ();
+
+			if (num <= 50) {
+				//interpolate (0,50) between green (0,255,0) and yellow (255,255,0)
+				double red = num / (50d / 255);
+				color = Color.FromRgb ((byte)red, 255, 0);
+			} else {
+				//interpolate (50,100) between yellow (255,255,0) and red (255,0,0)
+				double green = (100d - num) / (50d / 255);
+				color = Color.FromRgb (255, (byte)green, 0);
+			}
+
+			colorAnim.From = current;
+			colorAnim.To = color;
+			colorSb.Begin ();
+		}
+
+		public void PageLoaded (object o, EventArgs e) 
+		{
+			cpurect = FindName ("CPULoadRectangle") as Shape;
+			load = FindName ("Load") as TextBlock;
+			colorSb = FindName ("color_sb") as Storyboard;
+			colorAnim = FindName ("color_anim") as  ColorAnimation;
+			last = new CpuCounter ();
+
+			Storyboard sb = FindName ("run") as Storyboard;
+			DoubleAnimation timer = new DoubleAnimation ();
+			((TimelineCollection)sb.GetValue(TimelineGroup.ChildrenProperty)).Add(timer);
+			timer.Duration = new Duration (TimeSpan.FromMilliseconds (100));
+
+			sb.Completed += delegate {
+				DrawLoad ();
+				sb.Begin ();
+			};
+			sb.Begin ();
+			DrawLoad ();
+		}
+	}
+ }
+
 Conclusion
 ----------
 
