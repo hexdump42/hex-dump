@@ -349,10 +349,216 @@ ul.auto-toc {
 <pre class="literal-block">
 mopen xaml101-1.xaml
 </pre>
+<p>To identify elements within a Moonlight application, naming of an element instance can be done using the X:Name property. Naming elements allows CLI language to easily access the element and is also required to animate elements.</p>
+<pre class="literal-block">
+&lt;Canvas
+    xmlns=&quot;http://schemas.microsoft.com/client/2007&quot;
+    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+    Height=&quot;600&quot; Width=&quot;600&quot;
+    Background=&quot;Gray&quot;&gt;
+  &lt;Rectangle
+      x:Name=&quot;MyRectangleOne&quot;
+      Canvas.Left=&quot;20&quot; Canvas.Top=&quot;40&quot;
+      Height=&quot;200&quot; Width=&quot;200&quot;
+      Stroke=&quot;Black&quot; StrokeThickness=&quot;10&quot; Fill=&quot;Green&quot; /&gt;
+&lt;/Canvas&gt;
+</pre>
+<p>Simple animation</p>
+<pre class="literal-block">
+&lt;Canvas
+    xmlns=&quot;http://schemas.microsoft.com/client/2007&quot;
+    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;&gt;
+  &lt;Canvas.Triggers&gt;
+       &lt;EventTrigger RoutedEvent=&quot;Canvas.Loaded&quot;&gt;
+           &lt;EventTrigger.Actions&gt;
+               &lt;BeginStoryboard&gt;
+                   &lt;Storyboard&gt;
+                       &lt;ColorAnimation Storyboard.TargetName=&quot;MyRectangleOnesBrush&quot;
+                                          Storyboard.TargetProperty=&quot;Color&quot;
+                                          From=&quot;Green&quot; To=&quot;Blue&quot;
+                                          Duration=&quot;0:0:5&quot; /&gt;
+                   &lt;/Storyboard&gt;
+               &lt;/BeginStoryboard&gt;
+           &lt;/EventTrigger.Actions&gt;
+       &lt;/EventTrigger&gt;
+  &lt;/Canvas.Triggers&gt;
+
+  &lt;Rectangle
+      x:Name=&quot;MyRectangleOne&quot;
+      Canvas.Left=&quot;20&quot; Canvas.Top=&quot;40&quot;
+      Height=&quot;200&quot; Width=&quot;200&quot;
+      Stroke=&quot;Black&quot; StrokeThickness=&quot;10&quot; &gt;
+       &lt;Rectangle.Fill&gt;
+           &lt;SolidColorBrush x:Name=&quot;MyRectangleOnesBrush&quot; Color=&quot;Green&quot; /&gt;
+       &lt;/Rectangle.Fill&gt;
+  &lt;/Rectangle&gt;
+&lt;/Canvas&gt;
+</pre>
+<p>XAML is used to define the presentation layer for a Moonlight application, and relies on the application logic to be provided by either the browser javascript or a compiled assembly. The x:Class property allows the creation of a custom class in a CLI language that extends Canvas. The following example extends Canvas and prints the CPU load within the Rectangle.</p>
+<p>xaml101-4.xaml - XAML to display rectangle with text block:</p>
+<pre class="literal-block">
+&lt;Canvas
+    xmlns=&quot;http://schemas.microsoft.com/client/2007&quot;
+    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+       x:Class=&quot;CPULoad.CpuMonitorPanel;assembly=monitor.dll&quot;
+       Loaded=&quot;PageLoaded&quot; Width=&quot;300&quot; Height=&quot;300&quot;&gt;
+
+       &lt;Canvas.Resources&gt;
+           &lt;Storyboard x:Name=&quot;run&quot;&gt;
+           &lt;/Storyboard&gt;
+           &lt;Storyboard x:Name=&quot;color_sb&quot;&gt;
+                       &lt;ColorAnimation x:Name=&quot;color_anim&quot;
+                               Storyboard.TargetName=&quot;CPULoadRectangleBrush&quot;
+                               Storyboard.TargetProperty=&quot;Color&quot;
+                               From=&quot;Green&quot; To=&quot;Green&quot; Duration=&quot;0:0:1&quot; /&gt;
+           &lt;/Storyboard&gt;
+   &lt;/Canvas.Resources&gt;
+
+  &lt;Rectangle
+      x:Name=&quot;CPULoadRectangle&quot;
+      Canvas.Left=&quot;20&quot; Canvas.Top=&quot;40&quot;
+      Height=&quot;200&quot; Width=&quot;200&quot;
+      Stroke=&quot;Black&quot; StrokeThickness=&quot;10&quot; &gt;
+       &lt;Rectangle.Fill&gt;
+           &lt;SolidColorBrush x:Name=&quot;CPULoadRectangleBrush&quot; Color=&quot;White&quot; /&gt;
+       &lt;/Rectangle.Fill&gt;
+  &lt;/Rectangle&gt;
+  &lt;TextBlock
+      x:Name=&quot;Load&quot;
+      Text=&quot;100%&quot;
+      FontSize=&quot;36&quot;
+      FontWeight=&quot;Bold&quot;
+      Foreground=&quot;White&quot;
+      Canvas.Left=&quot;40&quot;
+      Canvas.Top=&quot;60&quot; /&gt;
+&lt;/Canvas&gt;
+</pre>
+<p>monitor.cs:</p>
+<pre class="literal-block">
+using System;
+using System.IO;
+using System.Globalization;
+
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Shapes;
+
+namespace CPULoad
+{
+       public struct CpuCounter {
+               long user;
+               long nice;
+               long system;
+               long idle;
+               long iowait;
+               long irq;
+               long softirq;
+               long steal;
+               long total;
+
+               public void Read (String line) {
+                       String[] parts = line.Split (new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                       total += (user = long.Parse (parts [1]));
+                       total += (nice = long.Parse (parts [2]));
+                       total += (system = long.Parse (parts [3]));
+                       total += (idle = long.Parse (parts [4]));
+                       total += (iowait = long.Parse (parts [5]));
+                       total += (irq = long.Parse (parts [6]));
+                       total += (softirq = long.Parse (parts [7]));
+                       total += (steal = long.Parse (parts [8]));
+               }
+
+               public CpuCounter Sub (ref CpuCounter other) {
+                       CpuCounter res = this;
+                       res.user -= other.user;
+                       res.nice -= other.nice;
+                       res.system -= other.system;
+                       res.idle -= other.idle;
+                       res.iowait -= other.iowait;
+                       res.irq -= other.irq;
+                       res.softirq -= other.softirq;
+                       res.steal -= other.steal;
+                       res.total -= other.total;
+                       return res;
+               }
+
+               public void FetchGlobalCounters() {
+                       using ( StreamReader sr = new StreamReader (&quot;/proc/stat&quot;)) {
+                               String line = sr.ReadLine ();
+                               Read (line);
+                       }
+               }
+
+               public double CpuLoad () {
+                       return 100d * ((double)(total - idle) / total);
+               }
+       }
+
+       public class CpuMonitorPanel : Canvas
+       {
+               Shape cpurect;
+               TextBlock load;
+               CpuCounter last;
+               ColorAnimation colorAnim;
+               Storyboard colorSb;
+
+               public void DrawLoad ()
+               {
+                       CpuCounter cur = new CpuCounter ();
+                       cur.FetchGlobalCounters ();
+                       CpuCounter delta = cur.Sub (ref last);
+                       last = cur;
+
+                       double num = Math.Round (delta.CpuLoad ());
+                       load.Text = ((int)num).ToString ();
+                       Color current = (cpurect.Fill as SolidColorBrush).Color;
+                       Color color = new Color ();
+
+                       if (num &lt;= 50) {
+                               //interpolate (0,50) between green (0,255,0) and yellow (255,255,0)
+                               double red = num / (50d / 255);
+                               color = Color.FromRgb ((byte)red, 255, 0);
+                       } else {
+                               //interpolate (50,100) between yellow (255,255,0) and red (255,0,0)
+                               double green = (100d - num) / (50d / 255);
+                               color = Color.FromRgb (255, (byte)green, 0);
+                       }
+
+                       colorAnim.From = current;
+                       colorAnim.To = color;
+                       colorSb.Begin ();
+               }
+
+               public void PageLoaded (object o, EventArgs e)
+               {
+                       cpurect = FindName (&quot;CPULoadRectangle&quot;) as Shape;
+                       load = FindName (&quot;Load&quot;) as TextBlock;
+                       colorSb = FindName (&quot;color_sb&quot;) as Storyboard;
+                       colorAnim = FindName (&quot;color_anim&quot;) as  ColorAnimation;
+                       last = new CpuCounter ();
+
+                       Storyboard sb = FindName (&quot;run&quot;) as Storyboard;
+                       DoubleAnimation timer = new DoubleAnimation ();
+                       ((TimelineCollection)sb.GetValue(TimelineGroup.ChildrenProperty)).Add(timer);
+                       timer.Duration = new Duration (TimeSpan.FromMilliseconds (100));
+
+                       sb.Completed += delegate {
+                               DrawLoad ();
+                               sb.Begin ();
+                       };
+                       sb.Begin ();
+                       DrawLoad ();
+               }
+       }
+}
+</pre>
 </div>
 <div class="section">
 <h1><a id="conclusion" name="conclusion">Conclusion</a></h1>
-<p>Moonlight may be only alpha quality software (as Silverlight 1.1 is), but what the Moonlight team have achieved to-date makes me feel confident that the Linux community will not be left out of a Silverlight Rich Internet Applications world. Certainly Microsoft feels the same after annoucing <a class="citation-reference" href="#silverlight4linux" id="id11" name="id11">[silverlight4linux]</a> a formal parnership with Novell to deliver Silverlight support for Linux with Moonlight.</p>
+<p>Moonlight may be only alpha quality software (as Silverlight 1.1 is), but what the Moonlight team have achieved to-date makes me feel confident that the Linux community will not be left out of a Silverlight Rich Internet Applications world. Certainly Microsoft feels the same after announcing <a class="citation-reference" href="#silverlight4linux" id="id11" name="id11">[silverlight4linux]</a> a formal parnership with Novell to deliver Silverlight support for Linux with Moonlight.</p>
 </div>
 <div class="section">
 <h1><a id="references" name="references">References</a></h1>
