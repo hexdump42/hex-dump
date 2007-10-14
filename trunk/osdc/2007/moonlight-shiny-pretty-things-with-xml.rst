@@ -17,7 +17,7 @@ Version 1.0 consists of a presentation framework responsible for UI, graphics, a
 
 Version 1.1 improves the Canvas object whereby the XAML file can be augmented with code-behind code. It also supports an EMCA CLI [cli]_ runtime so it can execute compiled Mono code in a restricted environment with limited local file access.
 
-Similar to Silverlight, Moonlight is implemented as a combination of managed and unmanaged code. The majority of the rendering pipeline is coded in C/C++ and currently uses Cairo [cairo]_, the 2D vector graphics library. Media decoding is done using FFmpeg [ffmpeg]_. This code is in the moon module [moon]_. The code for XAML, base scripting and Linq support is in the olive module [olive]_.
+Similar to Silverlight, Moonlight is implemented as a combination of managed and unmanaged code. The majority of the rendering pipeline is coded in C++ and currently uses Cairo [cairo]_, the 2D vector graphics library. Media decoding is done using FFmpeg [ffmpeg]_. This code is in the moon module [moon]_. The code for XAML, base scripting and Linq support is in the olive module [olive]_.
 
 XAML 101
 --------
@@ -35,7 +35,7 @@ Every Moonlight XAML contains a root Canvas element with Silverlight and XAML na
 
 The Canvas element is used to contain and position other graphical primitive shapes, UI controls and additional Canvas elements. To add a shape to a Canvas, simply insert the shape element declaration between the <Canvas> tags. An element is positioned via the Canvas.Left and Canvas.Top properties. In the following example, a green filled Rectangle with a black border is added and positioned 20 pixels from the left and 40 pixels from the top of the Canvas. The Canvas element also has optional Height, Width and Background properties. 
 
-::
+xaml101-1.xaml::
  
  <Canvas
      xmlns="http://schemas.microsoft.com/client/2007"
@@ -50,7 +50,7 @@ The Canvas element is used to contain and position other graphical primitive sha
 
 To view the above example in a Moonlight enabled web browser, the XAML could be saved to a file called xaml101-1.xaml, and a HTML page created that embeds the Moonlight plugin and references the example xaml file. An example of a HTML page follows. 
 
-::
+xaml101.html::
 
  <html>
  <head>
@@ -76,7 +76,7 @@ Even though Silverlight was intended to be used within a web browser, the Moonli
 
 To identify elements within a Moonlight application, naming of an element instance can be done using the X:Name property. Naming elements allows CLI language to easily access the element and is also required to animate elements.
 
-::
+xaml101-2.xaml::
 
  <Canvas
      xmlns="http://schemas.microsoft.com/client/2007"
@@ -90,9 +90,22 @@ To identify elements within a Moonlight application, naming of an element instan
        Stroke="Black" StrokeThickness="10" Fill="Green" />
  </Canvas>
 
-Simple animation
+With Moonlight it is easy to use XAML to define animations. An EventTrigger
+element is used to start the animation, and the actual animation sequence is
+controlled by using a set of Storyboard elements as the EventTrigger action.
+Moonlight supports 3 types of animation:
 
-::
+ - ColorAnimation
+
+ - DoubleAnimation
+
+ - PointAnimation
+
+Each animation instance eiher can target a specific named canvas object and/or
+object property, or inherit the object or property from a parent Storyboard.
+
+xaml101-3.xaml - XAML to perform a simple colour animation by changing the
+colour of the rectangle from green to blue::
 
  <Canvas
      xmlns="http://schemas.microsoft.com/client/2007"
@@ -163,7 +176,7 @@ xaml101-4.xaml - XAML to display rectangle with text block::
        Canvas.Top="60" />
  </Canvas>
 
-monitor.cs::
+monitor.cs - based on cpumonitor desklet code example provided with moonlight::
 
  using System;
  using System.IO;
@@ -288,7 +301,15 @@ monitor.cs::
 Conclusion
 ----------
 
-Moonlight may be only alpha quality software (as Silverlight 1.1 is), but what the Moonlight team have achieved to-date makes me feel confident that the Linux community will not be left out of a Silverlight Rich Internet Applications world. Certainly Microsoft feels the same after announcing [silverlight4linux]_ a formal parnership with Novell to deliver Silverlight support for Linux with Moonlight.
+Currently Moonlight can only be obtained by check-out from the Mono subversion
+repository and must be compiled with the latest Mono SVN version as well. A
+majority of the Silverlight 1.0 and 1.1 api has been implemented, but many
+Silverlight applications will still not run under Moonlight, and others may only
+have limited functionality. Moonlight is currently useful for development of
+simple desktop widgets, and investigating the use of XAML for both desktop and
+web applications.
+
+Moonlight may be only alpha quality software (as Silverlight 1.1 is), but what the Moonlight team have achieved to-date makes me feel confident that the Linux community will not be left out of a Silverlight Rich Internet Applications world. Certainly Microsoft feels the same after announcing [silverlight4linux]_ a formal partnership with Novell to deliver Silverlight support for Linux with Moonlight.
 
 References
 ----------
