@@ -11,7 +11,7 @@ When Microsoft released Silverlight [silverlight]_, a cross platform, cross brow
 What is Moonlight
 -----------------
 
-Moonlight is an open source implementation of Microsoft's Silverlight Web development technology. At the time of the writing of this paper, Moonlight implements both versions of Silverlight. 
+Moonlight is an open source implementation of Microsoft's Silverlight Web development technology. At the time of the writing of this paper, Moonlight is a work in progress implementation of both versions of Silverlight. 
 
 Version 1.0 consists of a presentation framework responsible for UI, graphics, animation, and media playback. A Moonlight application is started when the Moonlight browser plugin is invoked within an HTML page. The plugin loads a XAML [xaml]_ file which contains a Canvas object. This Canvas object is the root element for all other elements used for the UI. These elements include basic graphic primitives and complex elements like images, and media. Moonlight can be manipulated by browser scripting languages thru modification of the DOM API it exposes. 
 
