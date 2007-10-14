@@ -1,0 +1,15 @@
+DESKLET = monitor
+SOURCES = monitor.cs
+
+ASSEMBLY = $(DESKLET).dll
+DSOURCES = $(SOURCES)
+LAUNCHER = mopen
+LOPTIONS = --debug
+
+all: $(ASSEMBLY)
+
+$(ASSEMBLY): $(DSOURCES)
+	gmcs -debug -target:library -pkg:silverdesktop $(DSOURCES)
+
+run: $(ASSEMBLY)
+	MONO_OPTIONS=$(LOPTIONS) $(LAUNCHER) xaml101-4.xaml
