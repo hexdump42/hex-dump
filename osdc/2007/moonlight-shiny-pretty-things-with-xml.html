@@ -299,10 +299,10 @@ ul.auto-toc {
 </div>
 <div class="section">
 <h1><a id="what-is-moonlight" name="what-is-moonlight">What is Moonlight</a></h1>
-<p>Moonlight is an open source implementation of Microsoft's Silverlight Web development technology. At the time of the writing of this paper, Moonlight implements both versions of Silverlight.</p>
+<p>Moonlight is an open source implementation of Microsoft's Silverlight Web development technology. At the time of the writing of this paper, Moonlight is a work in progress implementation of both versions of Silverlight.</p>
 <p>Version 1.0 consists of a presentation framework responsible for UI, graphics, animation, and media playback. A Moonlight application is started when the Moonlight browser plugin is invoked within an HTML page. The plugin loads a XAML <a class="citation-reference" href="#xaml" id="id4" name="id4">[xaml]</a> file which contains a Canvas object. This Canvas object is the root element for all other elements used for the UI. These elements include basic graphic primitives and complex elements like images, and media. Moonlight can be manipulated by browser scripting languages thru modification of the DOM API it exposes.</p>
 <p>Version 1.1 improves the Canvas object whereby the XAML file can be augmented with code-behind code. It also supports an EMCA CLI <a class="citation-reference" href="#cli" id="id5" name="id5">[cli]</a> runtime so it can execute compiled Mono code in a restricted environment with limited local file access.</p>
-<p>Similar to Silverlight, Moonlight is implemented as a combination of managed and unmanaged code. The majority of the rendering pipeline is coded in C/C++ and currently uses Cairo <a class="citation-reference" href="#cairo" id="id6" name="id6">[cairo]</a>, the 2D vector graphics library. Media decoding is done using FFmpeg <a class="citation-reference" href="#ffmpeg" id="id7" name="id7">[ffmpeg]</a>. This code is in the moon module <a class="citation-reference" href="#moon" id="id8" name="id8">[moon]</a>. The code for XAML, base scripting and Linq support is in the olive module <a class="citation-reference" href="#olive" id="id9" name="id9">[olive]</a>.</p>
+<p>Similar to Silverlight, Moonlight is implemented as a combination of managed and unmanaged code. The majority of the rendering pipeline is coded in C++ and currently uses Cairo <a class="citation-reference" href="#cairo" id="id6" name="id6">[cairo]</a>, the 2D vector graphics library. Media decoding is done using FFmpeg <a class="citation-reference" href="#ffmpeg" id="id7" name="id7">[ffmpeg]</a>. This code is in the moon module <a class="citation-reference" href="#moon" id="id8" name="id8">[moon]</a>. The code for XAML, base scripting and Linq support is in the olive module <a class="citation-reference" href="#olive" id="id9" name="id9">[olive]</a>.</p>
 </div>
 <div class="section">
 <h1><a id="xaml-101" name="xaml-101">XAML 101</a></h1>
@@ -315,6 +315,7 @@ ul.auto-toc {
 &lt;/Canvas&gt;
 </pre>
 <p>The Canvas element is used to contain and position other graphical primitive shapes, UI controls and additional Canvas elements. To add a shape to a Canvas, simply insert the shape element declaration between the &lt;Canvas&gt; tags. An element is positioned via the Canvas.Left and Canvas.Top properties. In the following example, a green filled Rectangle with a black border is added and positioned 20 pixels from the left and 40 pixels from the top of the Canvas. The Canvas element also has optional Height, Width and Background properties.</p>
+<p>xaml101-1.xaml:</p>
 <pre class="literal-block">
 &lt;Canvas
     xmlns=&quot;http://schemas.microsoft.com/client/2007&quot;
@@ -328,6 +329,7 @@ ul.auto-toc {
 &lt;/Canvas&gt;
 </pre>
 <p>To view the above example in a Moonlight enabled web browser, the XAML could be saved to a file called xaml101-1.xaml, and a HTML page created that embeds the Moonlight plugin and references the example xaml file. An example of a HTML page follows.</p>
+<p>xaml101.html:</p>
 <pre class="literal-block">
 &lt;html&gt;
 &lt;head&gt;
@@ -350,6 +352,7 @@ ul.auto-toc {
 mopen xaml101-1.xaml
 </pre>
 <p>To identify elements within a Moonlight application, naming of an element instance can be done using the X:Name property. Naming elements allows CLI language to easily access the element and is also required to animate elements.</p>
+<p>xaml101-2.xaml:</p>
 <pre class="literal-block">
 &lt;Canvas
     xmlns=&quot;http://schemas.microsoft.com/client/2007&quot;
@@ -363,7 +366,21 @@ mopen xaml101-1.xaml
       Stroke=&quot;Black&quot; StrokeThickness=&quot;10&quot; Fill=&quot;Green&quot; /&gt;
 &lt;/Canvas&gt;
 </pre>
-<p>Simple animation</p>
+<p>With Moonlight it is easy to use XAML to define animations. An EventTrigger
+element is used to start the animation, and the actual animation sequence is
+controlled by using a set of Storyboard elements as the EventTrigger action.
+Moonlight supports 3 types of animation:</p>
+<blockquote>
+<ul class="simple">
+<li>ColorAnimation</li>
+<li>DoubleAnimation</li>
+<li>PointAnimation</li>
+</ul>
+</blockquote>
+<p>Each animation instance eiher can target a specific named canvas object and/or
+object property, or inherit the object or property from a parent Storyboard.</p>
+<p>xaml101-3.xaml - XAML to perform a simple colour animation by changing the
+colour of the rectangle from green to blue:</p>
 <pre class="literal-block">
 &lt;Canvas
     xmlns=&quot;http://schemas.microsoft.com/client/2007&quot;
@@ -433,7 +450,7 @@ mopen xaml101-1.xaml
       Canvas.Top=&quot;60&quot; /&gt;
 &lt;/Canvas&gt;
 </pre>
-<p>monitor.cs:</p>
+<p>monitor.cs - based on cpumonitor desklet code example provided with moonlight:</p>
 <pre class="literal-block">
 using System;
 using System.IO;
@@ -558,7 +575,14 @@ namespace CPULoad
 </div>
 <div class="section">
 <h1><a id="conclusion" name="conclusion">Conclusion</a></h1>
-<p>Moonlight may be only alpha quality software (as Silverlight 1.1 is), but what the Moonlight team have achieved to-date makes me feel confident that the Linux community will not be left out of a Silverlight Rich Internet Applications world. Certainly Microsoft feels the same after announcing <a class="citation-reference" href="#silverlight4linux" id="id11" name="id11">[silverlight4linux]</a> a formal parnership with Novell to deliver Silverlight support for Linux with Moonlight.</p>
+<p>Currently Moonlight can only be obtained by check-out from the Mono subversion
+repository and must be compiled with the latest Mono SVN version as well. A
+majority of the Silverlight 1.0 and 1.1 api has been implemented, but many
+Silverlight applications will still not run under Moonlight, and others may only
+have limited functionality. Moonlight is currently useful for development of
+simple desktop widgets, and investigating the use of XAML for both desktop and
+web applications.</p>
+<p>Moonlight may be only alpha quality software (as Silverlight 1.1 is), but what the Moonlight team have achieved to-date makes me feel confident that the Linux community will not be left out of a Silverlight Rich Internet Applications world. Certainly Microsoft feels the same after announcing <a class="citation-reference" href="#silverlight4linux" id="id11" name="id11">[silverlight4linux]</a> a formal partnership with Novell to deliver Silverlight support for Linux with Moonlight.</p>
 </div>
 <div class="section">
 <h1><a id="references" name="references">References</a></h1>
