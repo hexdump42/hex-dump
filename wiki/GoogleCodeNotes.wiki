@@ -1,0 +1,8 @@
+#summary Notes on using Google Code.
+
+Change mime type of svn hosted file
+
+{{{
+svn propset svn:mime-type text/html yourhtmlfile.html
+svn commit -m "Fix mime type"
+}}}
