@@ -5,7 +5,7 @@
    Background="White"
    >
   
-<MediaElement AutoPlay="False" x:Name="Movie_wmv" Width="320" Height="240" Canvas.Left="128" Canvas.Top="56" Source="Movie.wmv" Stretch="Fill"/>
+<MediaElement AutoPlay="False" x:Name="Movie" Width="320" Height="240" Canvas.Left="128" Canvas.Top="56" Source="Movie.ogg" Stretch="Fill"/>
   
 <TextBlock x:Name="txtPlay" Width="72" Height="24" Canvas.Left="136"
       Canvas.Top="336" Text="Play" TextWrapping="Wrap" 
