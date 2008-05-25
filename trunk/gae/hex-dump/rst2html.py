@@ -37,14 +37,19 @@ class Rest2Html(object):
     def __init__(self, req):
         self.request = req
     def get(self):
-        return """<form method="POST">
-        Enter ReStructured Text: <input type="text" name="rest_text">
-        <input type="submit" value="Convert to HTML">
-        </form>
-        <a href='%s'>Home</a>
-        """ % (url(),)
+        if self.request.params.get('text', False):
+            return self._render(self.request.params['text'])
+        else:
+            return """<form method="POST">
+            Enter <a href="http://docutils.sourceforge.net/rst.html" >reStructured Text:</a><br><textarea rows="10" cols="60" name="text"></textarea>
+            <br><input type="submit" value="Convert to HTML">
+            </form>
+            <a href='%s'>Home</a>
+            """ % (url(),)
     def post(self):
-        text = self.request.params['rest_text']
+        text = self.request.params['text']
+        return self._render(text)
+    def _render(self, text):
         logging.info(text)
         return rst_render(text, writer=_w)
         
