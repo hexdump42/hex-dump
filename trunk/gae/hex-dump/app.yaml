@@ -11,5 +11,14 @@ handlers:
   static_files: static/images/favicon.ico
   upload: static/images/favicon.ico
 
+- url: /js
+  static_dir: wiki/js
+
+- url: /css
+  static_dir: wiki/css
+  
+- url: /mosc2010
+  static_dir: static/mosc2010
+
 - url: /.*
   script: main.py
