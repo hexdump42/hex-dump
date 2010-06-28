@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>HTML5 - What is it &amp; why is it important</title>
+		<!-- CSS make older non IE pre html5 browsers handle new elements ok --> 
+	    <style> 
+	      article, aside, dialog, figure, footer, header, hgroup, menu, nav,
+	      section {
+	          display: block;
+	      }
+	    </style> 
+	    <link rel="stylesheet" type="text/css" href="presentation.css" />  
+	    <style> 
+	      body {
+	        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	      }
+	      code, pre {
+	        font-family: "Andale Mono", Monaco, "Consolas", "Lucida Console",
+	                     Courier, "Courier New", monospace;
+	      }
+	      ul {
+	        list-style-position: inside;
+	      }
+	    </style> 
+		<link href="shCore.css" rel="stylesheet" type="text/css" />
+		<link type="text/css" rel="Stylesheet" href="shThemeDjango.css"/>
+		
+		<!-- Force ie to recognise new html5 elements -->
+	    <!--[if lt IE 9]>
+	        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	    <![endif]--> 
+	    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script> 
+	    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="modernizr-1.5.min.js"></script> 
+	    <script type="text/javascript" src="presentation.js"></script>
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+		<script type="text/javascript" src="shCore.js"></script>
+		<script type="text/javascript" src="shBrushJScript.js"></script>
+		<script type="text/javascript" src="shBrushPlain.js"></script>
+		<script type="text/javascript" src="shBrushXml.js"></script>
+		<script type="text/javascript" src="shBrushCss.js"></script>
+		
+	</head>
+	<body>
+		<article class="slides">
+			<header>
+				<h1>HTML5 - What &amp; Why</h1>
+				<nav>
+					<ul>
+						<li><button id="previous-slide">Prev</button></li>
+						<li><button id="next-slide">Next</button></li>
+					</ul>
+				</nav>
+			</header>
+			<section id="title">
+				<hgroup>
+					<h1>
+						<a href="." rel="bookmark">HTML5</a>
+					</h1>
+					<h2>What is it &amp; why is it important</h2>
+				</hgroup>
+			</section>
+			<section id="what-is-html5">
+				<h2>What is HTML5?</h2>
+				<p>The Perception:</p>
+				<ul>
+					<li>Flash Killer</li>
+					<li>Offline Web Apps</li>
+					<li>Cool Presentation Effects</li>
+					<li>Fast Javascript</li>
+				</ul>
+				<p>The Truth: it's the next w3c web markup spec</p>
+			</section>
+			
+			<section id="what-is-the-talk-about">
+				<h2>What is the talk about?</h2>
+				<p>The Perception</p>
+				<p>HTML5 + Javascript API's + CSS3</p>
+			</section>
+			<section id="html5-markup-changes-1">
+				<h2>HTML5 Markup Changes</h2>
+				
+				<p>Pre HTML5 - 15 doctypes that trigger "standards mode". Like:</p>
+				<pre class="brush: xml">&lt;!DOCTYPE html
+ PUBLIC "-//W3C//DTD XMTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml11/DTD/xhtml11-strict.dtd"&gt;</pre>
+				<p>With HTML5 "simple" DOCTYPE</p>
+				<pre class="brush: xml">&lt;!DOCTYPE html &gt;</pre>
+			</section>
+			
+			<section id="html5-markup-changes-2">
+				<h2>HTML5 Markup Changes</h2>
+				<p>New Semantic Elements</p>
+				<p>&lt;section&gt;
+				&lt;nav&gt;
+				&lt;article&gt;
+				&lt;aside&gt;
+				&lt;hgroup&gt;
+				&lt;header&gt;
+				&lt;footer&gt;
+				&lt;time&gt;
+				&lt;mark&gt;</p>
+				
+				<p>Easy to add support for elements in non html5 browser</p>
+				<pre class="brush: js">
+				<!-- css to make older non IE pre html5 browsers handle new elements ok --> 
+				<style> 
+					  article, aside, dialog, figure, footer, header, hgroup, menu, nav,
+					  section {
+					      display: block;
+					  }</style>
+				<!-- Force ie to recognise new html5 elements -->
+				<!--[if lt IE 9]>
+				    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+				<![endif]-->
+				</pre>
+				
+			</section>
+			
+			<section id="form-enhancements">
+				<h2>Form Enhancements</h2>
+				<form>
+				    <fieldset>
+				        <legend>New Attributes</legend>
+				        <p>
+				            <label>Required:</label>
+				            <input type="text" name="html5requied" required="true">
+				        </p>
+				        <p>
+				            <label>AutoFocus:</label>
+				            <input type="text" name="html5autofocus" autofocus="true">
+				        </p>
+				        <p>
+				            <label>PlaceHolder:</label>
+				            <input type="text" name="html5placeholder" placeholder="This Will Show in WebKit">
+				        </p>
+				        <p>
+				            <label>Input Pattern:</label>
+				            <input type="text" pattern="[0-9][A-Z]{3}" name="html5pattern" required title="Enter a digit followed by three uppercase letters"/>
+				        </p>
+				        <p>
+				            <label>Multiple Files:</label>
+				            <input type="file" name="html5multiplefileupload" multiple>
+				        </p>
+						<p>
+							<label>Range:</label>        
+							<input type="range" name="html5range" min="-100" max="100" value="0" step="10">
+						</p>
+				    </fieldset>
+			</section>
+				
+			<section id="editable-content">
+				<h2>Editable Content</h2>
+				<p>Any elements with the contenteditable attribute set will have a grey outline as you hover over.</p>
+				
+				<h2>To Do List</h2>
+					<ul id="edit" contenteditable="true">
+						<li></li>
+					</ul>
+			</section>
+
+			<section id="audio" h5:feature="audio">
+				<h2>Audio</h2>
+				<p>native audio support</p>
+				<p>codec's: ogg, oga, mp3, wav, AAC</p>
+				<audio controls>
+					<source src="BillRayDrums_-_Funky_BC_Drums.mp3" />
+				</audio>
+				<p><a href="http://ccmixter.org/files/BillRayDrums/25868">"Funky BC Drums"</a> by BillRayDrums 2010 - Licensed under Creative Commons Attribution Noncommercial (3.0)</p>
+				<pre class="brush: js">
+				<audio id="a_clip" controls>
+					<source src="BillRayDrums_-_Funky_BC_Drums.mp3" />
+					<source src="BillRayDrums_-_Funky_BC_Drums.ogg" />
+				</audio>
+				var a_clip = document.querySelector('#a_clip');
+				a_clip.muted=false;
+				</pre>
+				
+			</section>
+		
+			<section id="video" h5:feature="video">
+				<h2>Video</h2>
+			</section>
+			
+			<section id="canvas" h5:feature="canvas">
+				<h2>2D Drawing Canvas</h2>
+				<canvas id="demo-canvas" width="300" height="200"></canvas>
+				<pre class="brush: js">
+				<script>
+					var canvas = document.getElementById("demo-canvas");
+					var ctx = canvas.getContext("2d");
+					var gradient = ctx.createLinearGradient(0, 0, 300, 0);
+					gradient.addColorStop(0, "blue");
+					gradient.addColorStop(1, "white");
+					ctx.fillStyle = gradient;
+					ctx.fillRect(0, 0, 300, 200);
+					ctx.font = "bold 20px sans-serif";
+					ctx.fillStyle = "lime";
+					ctx.fillText("HTML5 Rules", 20, 80);
+				</script>
+				</pre>	
+			</section>
+			
+			<section id="geolocation" h5:feature="geolocation">
+				<h2>Geolocation</h2>
+				<p>navigator.geolocation.getCurrentPosition()</p>
+				<button id="see_position">Where am I?</button>
+				<button id="see_position_code" style="display: none">Show code?</button>
+				<div id="map_canvas" style="position: relative; width: 600px; height: 200px"></div>
+				<div id="geocode" style="display:none">
+				<pre class="brush: js">
+					&lt;script&gt;
+						document.getElementById('see_position').addEventListener('click', function() {
+							if (navigator.geolocation) {
+								navigator.geolocation.getCurrentPosition(showPosition);
+								// also monitor position as it changes
+								navigator.geolocation.watchPosition(showPosition);
+								} else {
+									alert("no geolocation support");
+								}
+								function showPosition(position) {
+									var latlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+									...
+								}
+	 						}, false);
+					&lt;/script&gt;
+				</pre>
+				</div>
+				<script>
+					document.getElementById('see_position_code').addEventListener('click', function() { 
+						$("#map_canvas").hide();
+						$("#see_position_code").hide()
+						$("#geocode").show();
+						$("#see_position").show();
+					}, false);
+					document.getElementById('see_position').addEventListener('click', function() {
+						if (navigator.geolocation) {
+							navigator.geolocation.getCurrentPosition(showPosition);
+							// also monitor position as it changes
+							navigator.geolocation.watchPosition(showPosition);
+							$('#map_canvas').show();
+							$("#see_position").hide();
+							$('#geocode').hide();
+							$("#see_position_code").show();
+							} else {
+								alert("no geolocation support");
+							}
+							function showPosition(position) {
+								var latlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+								var mapopts = {
+									zoom: 14,
+									center: latlng,
+									mapTypeId: google.maps.MapTypeId.ROADMAP
+								};
+								var map = new google.maps.Map(document.getElementById("map_canvas"), mapopts);
+								var marker = new google.maps.Marker({
+									position: latlng,
+									map: map
+									});
+							}
+ 						}, false);
+				</script>
+			</section>
+			
+			<section id="detecting-features">
+				<h2>Detecting HTML5 Support</h2>
+				<p>Modernizr (<a href="http://www.modernizr.com/">http://www.modernizr.com/</a>) is an open source JavaScript library that detects the availability of native implementations of many HTML5 & CSS3 features</p>
+				<pre class="brush: xml">
+					&lt;!DOCTYPE html&gt;
+					&lt;html&gt;
+					&lt;head&gt;
+					  &lt;script src="modernizr.min.js">&lt;/script&gt;
+					&lt;/head&gt;
+					&lt;body&gt;
+					  &lt;script&gt;if (Modernizr.canvas) { doSomething();}&lt;/script&gt;
+					&lt;/body&gt;
+					&lt;/html&gt;
+				</pre>
+			</section>
+			
+			<section id="resources">
+				<h2>Resources</h2>
+				<p><a href="http://hex-dump.appspot.com/mosc2010/html5.html">Latest version of this presentation (http://hex-dump.appspot.com/mosc2010/html5.html)</a></p>
+				<p><a href="http://diveintohtml5.org/">Dive into HTML5 by Mark Pilgrim (http://diveintohtml5.org/)</a></p>
+				<p><a href="http://html5rocks.com/">Google Developer Resources for HTML5(http://html5rocks.com/)</a></p>
+			</section>
+			
+			<section id="questions">
+				<h2>Questions?</h2>
+			</section>
+			
+			<footer>
+				<div id="browsersupport" style="display:none">Your browser supports this feature</div>
+				<div id="nobrowsersupport" style="display:none">Your browser does not support this feature</div>
+				<address class="vcard">
+					<a href="#" class="url fn">Mark Rees</a>, 
+					<a href="http://www.centurysoftware.com.my">Century Software</a>
+				</address>
+				<p>MOSC, Kulua Lumpur, 30 June 2010</p>
+			</footer>
+		</article>
+		<script type="text/javascript">
+		     SyntaxHighlighter.all()
+		</script>
+	</body>
+</html>
