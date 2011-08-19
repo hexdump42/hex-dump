@@ -1,0 +1,344 @@
+<!doctype html> 
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ --> 
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]--> 
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]--> 
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]--> 
+<!-- Consider adding an manifest.appcache: h5bp.com/d/Offline --> 
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]--> 
+<head> 
+  <meta charset="utf-8"> 
+ 
+  <!-- Use the .htaccess and remove these lines to avoid edge case issues.
+       More info: h5bp.com/b/378 --> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+ 
+  <title></title> 
+  <meta name="description" content=""> 
+  <meta name="author" content=""> 
+ 
+  <!-- Mobile viewport optimized: j.mp/bplateviewport --> 
+  <meta name="viewport" content="width=device-width,initial-scale=1"> 
+ 
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons --> 
+ 
+  <!-- CSS: implied media=all --> 
+  <!-- CSS concatenated and minified via ant build script--> 
+  <link rel="stylesheet" href="css/style.css"> 
+  <!-- end CSS-->
+  <link rel="stylesheet" type="text/css" href="presentation.css" />  
+  <style> 
+	      body {
+	        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	      }
+	      code, pre {
+	        font-family: "Andale Mono", Monaco, "Consolas", "Lucida Console",
+	                     Courier, "Courier New", monospace;
+	      }
+	      ul {
+	        list-style-position: inside;
+	      }
+  </style> 
+  <link href="shCore.css" rel="stylesheet" type="text/css" />
+  <!--link type="text/css" rel="Stylesheet" href="shThemeDjango.css"/-->
+  <link type="text/css" rel="Stylesheet" href="shThemeEclipse.css"/>
+
+ 
+  <!-- More ideas for your <head> here: h5bp.com/d/head-Tips --> 
+ 
+  <!-- All JavaScript at the bottom, except for Modernizr / Respond.
+       Modernizr enables HTML5 elements & feature detects; Respond is a polyfill for min/max-width CSS3 Media Queries
+       For optimal performance, use a custom Modernizr build: www.modernizr.com/download/ --> 
+  <script src="js/libs/modernizr-2.0.6.min.js"></script> 
+</head> 
+ 
+<body> 
+ 
+  <div id="container"> 
+    	<body>
+		<article class="slides">
+			<header>
+				<h1>A Python on the Couch</h1>
+				<nav>
+					<ul>
+						<li><button id="previous-slide">Prev</button></li>
+						<li><button id="next-slide">Next</button></li>
+					</ul>
+				</nav>
+			</header>
+			<section id="title">
+				<hgroup>
+					<h2>A Python on the Couch</h2>
+					<img src="img/python-on-the-couch.jpg"/>
+				</hgroup>
+				<address class="vcard">
+					<a href="#" class="url fn">Mark Rees</a>, 
+					<a href="http://www.centurysoftware.com.my">Century Software</a>
+				</address>
+				<p>PyCon AU, Sydney, Australia, August 2011</p>
+			</section>
+			<section id="what-is-html5">
+				<h2>What is CouchDB?</h2>
+				<p><b>N</b>ot <b>O</b>nly <b>S</b>QL</p>
+					<p>Document DB</p>
+					<p>Schema-less</p>
+					<p>HTTP API</p>
+					<p>Replication</p>
+					<p>Scalable</p>
+					<p>Distributed</p>
+			</section>
+			
+			<section id="what-is-cap">
+				<h2>What is CAP?</h2>
+				<p>Consistency - All database clients see the same data, even with concurrent
+updates.</p>
+				<p>Availability - All database clients are able to access some version of the data.</p>
+				<p>Partition tolerance - The database can be split over multiple servers.</p>
+				<p>Distributed systems can only guarantee two</p>
+			</section>
+			
+			<section id="eventual-consistency">
+				<h2>Eventual Consistency</h2>
+				<img src="img/cap.jpg" />
+			</section>
+			<section id="what-makes-couchdb-tick">
+				<h2>CouchDB under the covers</h2>
+				<img src="img/couchdb-sketch.png"/>
+				<p>No locks, uses MVCC</p>
+				<p>Versioning</p>
+				<p>Append only<p>
+			</section>
+			
+			<section id="data-storage-format">
+				<h2>Data stored as JSON</h2>
+				
+				<pre class="brush: js">
+{
+   "_id": "fb1636d07c03a9eef793ceda07000572",
+   "_rev": "55-0ea6b3e4646580c48aea59dd28ae1212",
+   "phone": [
+       {
+           "phone_number": "+61 2 9999 9999",
+           "phone_type": "work"
+       },
+       {
+           "phone_number": "+61 412 123 456",
+           "phone_type": "mobile"
+       }
+   ],
+   "name": "Monty Python",
+   "_attachments": {
+       "contact_picture": {
+           "content_type": "image/jpeg",
+           "revpos": 55,
+           "length": 93911,
+           "stub": true
+       }
+   }
+}
+				</pre>
+			</section>
+
+			<section id="http-api">
+				<h2>HTTP API</h2>
+				<pre class="brush: py">
+>>> r = requests.put('http://localhost:5984/my-contacts') #create database
+>>> r.content
+'{"ok":true}\n'
+
+>>> r_uuid = requests.get('http://localhost:5984/_uuids') #get a uuid
+>>> r_uuid.content
+'{"uuids":["bb4eddd42f7c98ec86bb16c3120001f2"]}\n'
+>>> # add a document
+>>> r = requests.put("http://localhost:5984/my-contacts/bb4eddd42f7c98ec86bb16c3120001f2", \
+... data='{"name":"Monty Python", "phone":"+612 1234 5678"}')
+>>> r.status_code
+201
+>>> r.content
+'{"ok":true,"id":"bb4eddd42f7c98ec86bb16c3120001f2","rev":"1-ce5658e9585866d257ae80e10a1aca11"}\n'
+# revise a document
+>>> r = requests.put("http://localhost:5984/my-contacts/bb4eddd42f7c98ec86bb16c3120001f2", \
+... data='{"_rev":"1-ce5658e9585866d257ae80e10a1aca11","name":"Monty Python", "phone":"+612 1234 5678", "email":"monty@python.org"}')
+>>> r.status_code
+201
+>>> r.content
+'{"ok":true,"id":"bb4eddd42f7c98ec86bb16c3120001f2","rev":"2-00c81aed8f6b6df83835017f0350df9c"}\n'
+>>>
+				</pre>
+			<pre>Using Requests module: http://docs.python-requests.org/</pre>
+			</section>
+
+			<section id="futon">
+				 <h2>Futon</h2>
+				 <img src="img/futon.png" />
+			</section>
+		
+			<section id="query-data">
+				<h2>Querying Data</h2>
+				<p>Views</p>
+				<p>Map Reduce</p>
+				<p>UnQL (NoSQL Query language) in the future</p>
+			</section>
+
+			<section id="couchapp">
+				<h2>CouchApps</h2>
+				<p>JavaScript, CSS, &amp; HTML5 applications served directly from CouchDB</p>
+				<p>Create &amp; manage couchapps with Python https://github.com/couchapp/couchapp</p>
+				<pre class="brush: plain">
+$ couchapp generate contacts-app
+2011-08-19 16:58:30 [INFO] /home/mark/swdev/couchdb-pycon-au-2011/contacts-app generated.
+$ ls contacts-app
+_attachments  couchapp.json  evently  _id  language  lists  README.md  shows  updates  vendor  views
+$ cd contacts-app
+$ vi _attachments/index.html
+$ vi _attachments/edit.js
+$ vi _attachments/edit.js
+$ vi _attachments/style/main.css
+$ couchapp generate view byname
+$ vi views/byname/map.js; rm views/byname/reduce.js
+$ couchapp push contacts-app
+2011-08-19 17:11:36 [INFO] Visit your CouchApp here:
+http://127.0.0.1:5984/contacts-app/_design/contacts-app/index.html
+				</pre>
+				<img src="img/couchapp.png" />
+				<p>IBM tutorial - Building CouchApps http://goo.gl/2L2wY</p>
+			</section>
+			
+			<section id="python-clients">
+				<h2>Python CouchDB Clients</h2>
+			<p>CouchDB (couchdb-python) - http://code.google.com/p/couchdb-python/</p>
+			<p>couchdbkit - http://couchdbkit.org/</p>
+			<p>couchdb-python-curl - http://code.google.com/p/couchdb-python-curl/</p>
+			</section>
+			
+			<section id="python-coucdb-client">
+				 <h2>python-couchdb client</h2>
+				 <pre class="brush: py">
+>>> import couchdb.client
+>>> server = couchdb.client.Server()
+>>> db = server['contacts']
+>>> doc_id, doc_rev = db.save({'name':'Monty Python','phone':'+612 1234 5678'})
+>>>
+>>> db.update([
+...  couchdb.client.Document(name='Brian',email='brian@lifeof.org'),
+...  couchdb.client.Document(name='Eric Idle',email='eric@lifeof.org')])
+[(True, u'804c2a84dcd264fbeea81c28b2000485', u'1-10d9a0bfe8d934e14ac9d28ed5546952'), (True, u'804c2a84dcd264fbeea81c28b20004ef', u'1-b20e3c32a1b9e731478a770b9a7ffb0f')]
+>>>
+>>> results = db.query('''function(doc) {
+...  emit(doc.name, doc);}''')
+>>> for doc in results:
+...  print doc
+&lt;Row id=u'804c2a84dcd264fbeea81c28b2000485', key=u'Brian', value={u'_rev': ...
+				 </pre>
+			</section>
+			
+			<section id="python-coucdb-mapping">
+				 <h2>python-couchdb mapping JSON <-> Python objects</h2>
+				 <pre class="brush: py">
+>>> from couchdb.mapping import Document
+>>> from couchdb.mapping import TextField
+>>> class Contact(Document):
+...   name = TextField()
+...   phone = TextField()
+...   email = TextField()
+... 
+>>> contact = Contact(name='Dead Parrot',email='dp@pet-shop.net')
+>>> contact.store(db)
+&lt;Contact u'804c2a84dcd264fbeea81c28b20008da'@u'1-9fe59fba51812190ebfb31232dcdfa7a' {'phone': None, 'name': u'Dead Parrot', 'email': u'dp@pet-shop.net'}&gt;
+>>> contact = Contact.load(db, contact.id)
+>>> contact.phone = "+602 2222 9999"
+>>> contact.store(db)
+&lt;Contact u'804c2a84dcd264fbeea81c28b20008da'@u'2-ee1e9fa988a43626a20aa04195eb506b' {u'phone': u'+602 2222 9999', u'name': u'Dead Parrot', u'email': u'dp@pet-shop.net'}&gt;
+				 </pre>
+			</section>
+			
+			<section id="python views">
+				 <h2>Python Views</h2>
+				 <p>CouchDB supports external view servers. python-couchdb provides a view server</p>
+				 <p>Enable in CouchDB local.ini</p>
+				 <pre class="brush: plain">
+[query_servers]
+python=/usr/bin/couchpy
+				 </pre>
+				 <img src="img/python-view.png" />
+			</section>
+			
+			<section id"web-frameworks">
+				<h2>Web Framework Support</h2>
+			<p>Django https://github.com/benoitc/couchdbkit</p>
+			<p>Flask http://packages.python.org/Flask-CouchDB/</p>
+			<p>web2py experimential built-in support</p>
+			<p>FormAlchemy https://github.com/FormAlchemy/formalchemy</p>
+			</section>
+			
+			<section id="pyramid-couchdb">
+				<h2>pyramid-couchdb</h2>
+				<p>Inspired by Flask-CouchDB, a WIP</p>
+				<p>https://bitbucket.org/hexdump42/pyramid-couchdb</p>
+				<pre class="brush: py">
+        form = ContactForm(request.POST)
+        req_post = request.POST
+        if form.validate():
+            contact = Contact.load(form.id.data, request.db)
+            contact.name = form.contactname.data
+            contact.phone = form.contactphone.data
+            contact.email = form.contactemail.data
+            if hasattr(request.POST["contactpicture_file"], 'file'):
+                image = request.POST["contactpicture_file"]
+                image_filename = image.filename
+                image_fileobj = image.file
+                request.db.put_attachment(contact,image_fileobj,
+                                          "contact_picture",
+                                          mimetypes.guess_type(image_filename)[0])
+            else:
+                contact.store(request.db)
+            url = request.route_url('contact_list')
+            return HTTPFound(location=url)
+				</pre>
+			</section>
+			
+			<section id="resources">
+				<h2>Resources</h2>
+				<p>CouchDB Home http://couchdb.apache.org/</p>
+				<p>CouchApp Home http://couchapp.org/page/index</p>
+			</section>
+			
+		</article>
+		
+	</body>
+  </div> <!--! end of #container --> 
+ 
+ 
+  <!-- JavaScript at the bottom for fast page loading --> 
+ 
+  <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline --> 
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script> 
+  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.6.2.min.js"><\/script>')</script> 
+ 
+ 
+  <!-- scripts concatenated and minified via ant build script--> 
+  <script defer src="js/plugins.js"></script> 
+  <script defer src="js/script.js"></script> 
+  <!-- end scripts--> 
+ 
+  <script type="text/javascript" src="js/mylibs/jquery-ui-1.7.3.min.js"></script>
+  <script type="text/javascript" src="js/mylibs/presentation.js"></script>
+  <script type="text/javascript" src="js/mylibs/shCore.js"></script>
+  <script type="text/javascript" src="js/mylibs/shBrushJScript.js"></script>
+  <script type="text/javascript" src="js/mylibs/shBrushPlain.js"></script>
+  <script type="text/javascript" src="js/mylibs/shBrushPython.js"></script>
+  <script type="text/javascript" src="js/mylibs/shBrushXml.js"></script>
+  <script type="text/javascript" src="js/mylibs/shBrushCss.js"></script>
+  <script type="text/javascript">
+    SyntaxHighlighter.all()
+  </script>
+	
+ 
+  <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
+       chromium.org/developers/how-tos/chrome-frame-getting-started --> 
+  <!--[if lt IE 7 ]>
+    <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+    <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+  <![endif]--> 
+  
+</body> 
+</html>
