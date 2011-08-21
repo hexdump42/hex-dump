@@ -3,6 +3,7 @@ body {
   font-size: 200%;
   margin: 0;
   padding: 0;
+
 }
 
 a {
@@ -29,6 +30,9 @@ article.slides {
   padding: 0;
   width: 100%;
   height: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(#bbd), to(#fff));
+  background-color: #eee;
+  background: -moz-linear-gradient(top, #bbd, #fff);
 }
 
 article.slides header, article.slides footer {
@@ -42,6 +46,7 @@ article.slides header, article.slides footer {
 article.slides header {
   top: 0;
   overflow: hidden;
+  background: #bbd;
 }
 
 article.slides header h1, article.slides header nav,
@@ -87,8 +92,10 @@ article.slides section h2 img {
   vertical-align: middle;
 }
 
+ul {
+    list-style-type: none;
+}
 .amp {
   font-family: "Apple Chancery";
   font-style: italic;
 }
-

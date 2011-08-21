@@ -44,13 +44,15 @@
 	<body>
 		<article class="slides">
 			<header>
-				<h1>HTML5 - What &amp; Why</h1>
-				<nav>
-					<ul>
-						<li><button id="previous-slide">Prev</button></li>
-						<li><button id="next-slide">Next</button></li>
-					</ul>
-				</nav>
+				<hgroup>
+					<h1>HTML5 - What &amp; Why</h1>
+					<nav>
+						<ul>
+							<li><button id="previous-slide">Prev</button></li>
+							<li><button id="next-slide">Next</button></li>
+						</ul>
+					</nav>
+				</hgroup>
 			</header>
 			<section id="title">
 				<hgroup>
@@ -74,7 +76,8 @@
 			
 			<section id="what-is-the-talk-about">
 				<h2>What is the talk about?</h2>
-				<p>The Perception</p>
+				<p>The Perception is Reality</p>
+				<p>When we combine:</p>
 				<p>HTML5 + Javascript API's + CSS3</p>
 			</section>
 			<section id="html5-markup-changes-1">
@@ -119,34 +122,24 @@
 			
 			<section id="form-enhancements">
 				<h2>Form Enhancements</h2>
-				<form>
-				    <fieldset>
-				        <legend>New Attributes</legend>
-				        <p>
-				            <label>Required:</label>
-				            <input type="text" name="html5requied" required="true">
-				        </p>
-				        <p>
-				            <label>AutoFocus:</label>
-				            <input type="text" name="html5autofocus" autofocus="true">
-				        </p>
-				        <p>
-				            <label>PlaceHolder:</label>
-				            <input type="text" name="html5placeholder" placeholder="This Will Show in WebKit">
-				        </p>
-				        <p>
-				            <label>Input Pattern:</label>
-				            <input type="text" pattern="[0-9][A-Z]{3}" name="html5pattern" required title="Enter a digit followed by three uppercase letters"/>
-				        </p>
-				        <p>
-				            <label>Multiple Files:</label>
-				            <input type="file" name="html5multiplefileupload" multiple>
-				        </p>
-						<p>
-							<label>Range:</label>        
-							<input type="range" name="html5range" min="-100" max="100" value="0" step="10">
-						</p>
-				    </fieldset>
+				        <pre>
+&lt;input type='<b>range</b>' min='0' max='50' value='0' /&gt; 
+<input type='range' min='0' max='50' value='0' />
+&lt;input results='10' type='<b>search</b>' /&gt; 
+<input results="10" type='search' />
+&lt;input type='text' <b>placeholder</b>='Search inside' /&gt; 
+<input type='text' placeholder='Search inside' />
+&lt;style> :invalid { background-color: red; } &lt;/style>
+&lt;input type='<b>color</b>' /&gt; 
+<input type='color' size="30" placeholder='Type a valid color here to validate' />
+&lt;input type='<b>number</b>' /&gt; 
+<input type='number' value="abc" />
+&lt;input type='<b>email</b>' /&gt; 
+<input type='email' value="some@email.com" />
+&lt;input type='<b>tel</b>' /&gt; 
+<input type='tel' value="1234" />
+etc...
+						</pre>
 			</section>
 				
 			<section id="editable-content">
@@ -154,7 +147,7 @@
 				<p>Any elements with the contenteditable attribute set will have a grey outline as you hover over.</p>
 				
 				<h2>To Do List</h2>
-					<ul id="edit" contenteditable="true">
+					<ul id="edit" contenteditable="true" style="list-style-type:square">
 						<li></li>
 					</ul>
 			</section>
@@ -164,7 +157,7 @@
 				<p>native audio support</p>
 				<p>codec's: ogg, oga, mp3, wav, AAC</p>
 				<audio controls>
-					<source src="BillRayDrums_-_Funky_BC_Drums.mp3" />
+					<source src="http://ccmixter.org/content/BillRayDrums/BillRayDrums_-_Funky_BC_Drums.mp3" />
 				</audio>
 				<p><a href="http://ccmixter.org/files/BillRayDrums/25868">"Funky BC Drums"</a> by BillRayDrums 2010 - Licensed under Creative Commons Attribution Noncommercial (3.0)</p>
 				<pre class="brush: js">
@@ -180,6 +173,16 @@
 		
 			<section id="video" h5:feature="video">
 				<h2>Video</h2>
+				<p>native video support</p>
+				<p>codec's: ogv, H.264 mp4, vp8</p>
+				<video width="320" height="240" preload="none" poster="videoframe.jpg" controls> 
+					<source src="http://mirror.cessen.com/blender.org/peach/trailer/trailer_400p.ogg" type="video/ogg" />  
+				</video>
+				<pre class="brush: js">
+				&lt;video width="320" height="240" preload="none" poster="videoframe.jpg" controls&gt; 
+					&lt;source src="http://mirror.cessen.com/blender.org/peach/trailer/trailer_400p.ogg" type="video/ogg" /&gt;  
+				&lt;/video&gt;
+				</pre>
 			</section>
 			
 			<section id="canvas" h5:feature="canvas">
@@ -201,6 +204,91 @@
 				</pre>	
 			</section>
 			
+			<section id="svg" h5:feature="svg">
+				<h2>SVG</h2>
+				<!-- based on example in html5rocks.com -->
+				<pre class="brush: xml">
+				&lt;svg&gt;
+				&lt;circle id="aCircle" class="important" cx="50%" cy="50%" r="100"
+				onmousedown="alert('you clicked on a circle');"/&gt;
+				&lt;/svg&gt;
+				</pre>
+				<div id="svg-demo"></div>
+				<p>Not all browsers support inline SVG, but javascript created SVG will work in most HTML5 browsers</p>
+				<script>
+				window.addEventListener('DOMContentLoaded', function() {
+				var container = document.getElementById('svg-demo');
+				var svgns = 'http://www.w3.org/2000/svg';
+				var svg = document.createElementNS(svgns, 'svg');
+				svg.setAttribute('width', '100px');
+				svg.setAttribute('height', '100px');
+				var circle = document.createElementNS(svgns, 'circle');
+				circle.setAttribute('cx', '50%');
+				circle.setAttribute('cy', '50%');
+				circle.setAttribute('r', 48);
+				circle.setAttribute('fill','blue');
+				circle.addEventListener('mousedown', function() {
+				alert('you clicked on a circle');
+				}, false);
+				svg.appendChild(circle);
+				container.appendChild(svg);
+				}, false);
+				</script>
+				<pre class="brush: js">
+				&lt;script&gt;
+					var container = document.getElementById('svg-demo');
+					var svgns = 'http://www.w3.org/2000/svg';
+					var svg = document.createElementNS(svgns, 'svg');
+					svg.setAttribute('width', '100px');svg.setAttribute('height', '100px');
+					var circle = document.createElementNS(svgns, 'circle');
+					circle.setAttribute('r', 48);circle.setAttribute('fill','blue');
+					circle.setAttribute('cx', '50%');circle.setAttribute('cy', '50%');
+					svg.appendChild(circle);container.appendChild(svg);
+				&lt;/script&gt;	
+				</pre>
+			</section>
+			
+			<section id="svg-2" h5:feature="svg">
+				<h2>SVG</h2>
+				<p>Or you can use a javascript library like <a href="http://raphaeljs.com/australia.html" target="svg-demo">http://raphaeljs.com/</a> to make SVG content creation easier</p>
+			</section>
+
+			<section id="webgl" >
+				<h2>WebGL 3D Canvas</h2>
+				<p>WebGL is based on OpenGL ES 2.0 and provides a programmatic interface for 3D graphics. It uses the HTML5 canvas element and is accessed using DOM interfaces.</p>
+				<a href="http://www.khronos.org/webgl/">http://www.khronos.org/webgl/</a>
+			</section>
+			
+			<section id="microdata" >
+				<h2>Microdata</h2>
+				<pre class='brush: xml'>
+					<li class="experience vevent vcard"> <a href="#name" class="include"></a> 
+						<h3 class="title">CTO</h3> 
+					      <h4 class="org summary"><a href="http://www.linkedin.com/companies/century-software?trk=ppro_cprof&amp;lnk=vw_cprofile" >Century Software (M) Sdn. Bhd.</a></h4> 
+						<p class="organization-details">(Computer Software industry)</p> 
+						<p class="period"> 
+							<abbr class="dtstart" title="2008-01-01">January 2008</abbr> 
+					 		&mdash; <abbr class="dtstamp" title="2010-06-29">Present</abbr>        
+							<abbr class="duration" title="P2Y6M">(2 years 6 months)</abbr> 
+						</p> 
+					</li>
+				</pre>
+				<a href="http://www.google.com/webmasters/tools/richsnippets?url=http://au.linkedin.com/in/markjrees&view=" target="mjr-microdata">What can we find out about me?</a>
+			</section>	
+			
+			<section id="selectors" >
+				<h2>Selectors</h2>
+				<p>New DOM Element Selector</p>
+				<pre class="brush: js">
+					var secs = document.getElementsByClassName('section');
+				</pre>
+				<p>New CSS Selectors</p>
+				<pre class="brush: js">
+					var els = document.querySelectorAll("ul li:nth-child(odd)");
+					var els = document.querySelectorAll("table.test > tr > td");
+				</pre>				
+			</section>
+								
 			<section id="geolocation" h5:feature="geolocation">
 				<h2>Geolocation</h2>
 				<p>navigator.geolocation.getCurrentPosition()</p>
@@ -261,6 +349,79 @@
  						}, false);
 				</script>
 			</section>
+
+			<section id="offline">
+				<h2>Offline (Application Cache API)</h2>
+				<pre class="brush: js">
+					&lt;html manifest="html5-demo.manifest"&gt;
+					window.applicationCache.addEventListener('checking', updateCacheStatus, false);
+				</pre>
+				<pre class="brush: plain">
+					CACHE MANIFEST
+
+					# version 0001
+
+					CACHE:
+					/mosc2010/jquery-1.3.2.min.js
+					/mosc2010/presentation.css
+					/mosc2010/background.png
+				</pre>
+			</section>
+						
+			<section id="local-storage">
+				<h2>Local Storage</h2>
+				<p>Web Storage specifies two ways to do "local" persistent data.</p>
+				<p>sessionStorage is used to save data during lifetime of open tab or window</p>
+				<p>localStorage is used to store data for longer periods, and survives browser close</p>
+				<p>Save text value on the client side (crash-safe)</p>
+				<textarea id="ta"></textarea>
+				<button id="save_ta">Save</button>
+				<pre class="brush: js">
+				<script type="text/javascript" >
+				var area = document.getElementById('ta');
+				if (!area.value) {
+				area.value = window.localStorage.getItem('entry');
+				}
+				document.getElementById('save_ta').addEventListener('click', function () {
+				window.localStorage.setItem('entry', area.value);
+				window.localStorage.setItem('timestamp', (new Date()).getTime());
+				}, false);
+				</script>
+				</pre>
+			</section>
+			
+			<section id="web-storage">
+				<h2>Web SQL/IndexedDB</h2>
+				<pre class="brush: js">
+					var db = window.openDatabase("MyDb", "1.0");
+					db.transaction(function(tx) {
+					  tx.executeSql("SELECT * FROM my_table", [], successCallback, errorCallback);
+					})
+				</pre>
+			</section>
+			
+			<section id="other-js-apis">
+				<h2>Other JS API's</h2>
+				<ul>
+					<li>X-Domain Communication</li>
+					<li>Notifications</li>
+					<li>Web Sockets</li>
+					<li>Web Workers</li>
+				</ul>
+			</section>
+			
+			<section id="css">
+				<h2>CSS</h2>
+				<ul>
+					<li>Columns</li>
+					<li>Rounded Corners</li>
+					<li>Web Fonts</li>
+					<li>Text Wrapping &amp; Stroke</li>
+					<li>Gradients</li>
+					<li>Transistions &amp; 2D Transforms</li>
+					<li>Animations</li>
+				</ul>
+			</section>
 			
 			<section id="detecting-features">
 				<h2>Detecting HTML5 Support</h2>
@@ -278,6 +439,22 @@
 				</pre>
 			</section>
 			
+			<section id="when-can-i-use-it">
+				<h2>What Browser Supports What</h2>
+				<p><a href="http://html5readiness.com/" target="html5readiness">http://html5readiness.com/</a></p>
+				<p><a href="http://caniuse.com/" target="html5readiness">http://caniuse.com/</a></p>
+				<p><a href="http://html5test.com/" target="html5readiness">http://html5test.com/</a></p>
+			</section>
+			
+			<section id="what-why-summary">
+				<h2>Summary</h2>
+				<h3>what is HTML5</h3>
+				<p>html5 + css3 + javascript api's</p>
+				<h3>Why</h3>
+				<p>much easier to build web applications not just web sites</p>
+				<p>cross browser support</p>
+			</section>
+			
 			<section id="resources">
 				<h2>Resources</h2>
 				<p><a href="http://hex-dump.appspot.com/mosc2010/html5.html">Latest version of this presentation (http://hex-dump.appspot.com/mosc2010/html5.html)</a></p>
@@ -293,8 +470,8 @@
 				<div id="browsersupport" style="display:none">Your browser supports this feature</div>
 				<div id="nobrowsersupport" style="display:none">Your browser does not support this feature</div>
 				<address class="vcard">
-					<a href="#" class="url fn">Mark Rees</a>, 
-					<a href="http://www.centurysoftware.com.my">Century Software</a>
+					<a href="http://hex-dump.blogspot.com/" class="url fn">Mark Rees</a>, 
+					<a href="http://www.centurysoftware.com.my/">Century Software</a>
 				</address>
 				<p>MOSC, Kulua Lumpur, 30 June 2010</p>
 			</footer>
